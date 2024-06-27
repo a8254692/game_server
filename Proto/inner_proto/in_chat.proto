@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./;msg";
+
+message InFriendsInfo
+{
+  uint32  EntityID = 1;
+  string  PlayerName = 2;
+  uint32  Sex = 3;
+  uint32  PlayerIcon = 4;
+  uint32  IconFrame = 5;
+  uint32  VipLv = 6;
+}
+
+message InFriendsList
+{
+  uint32 EntityID = 1;  //EntityID
+  repeated InFriendsInfo FriendsList = 2;  //好友列表
+}
+
+//同步用户私聊列表
+message InSavePrivateFriendsListRequest
+{
+  repeated InFriendsList List = 1;
+}
+
+//获取离线好友数据
+message InGetOfflinePrivateFriendsRequest
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+  uint32 PrivateEntityID = 2;  //私聊对象EntityID
+}
+
+//获取离线好友数据返回
+message InGetOfflinePrivateFriendsResponse
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+  InFriendsInfo FriendsInfo = 2;  //好友数据
+}

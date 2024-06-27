@@ -1,0 +1,312 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./;msg";
+import "reward.proto";
+
+message PeakRankInfo
+{
+  uint32 Status = 1;
+  uint32  ID = 2;
+  uint32  PeakRankLv = 3;
+  uint32  PeakRankExp = 4;
+}
+
+message ConditionAndReward
+{
+  uint32   No = 1;  //序号
+  uint32   ValueList = 2;  //条件值（目标值）
+  repeated  RewardInfo  RewardList = 3; //奖励列表
+  string TabName = 4; //选项卡名字
+  uint32   ProgressNum = 5; //进度值
+  uint32   Status = 6;  //领奖状态（目标值）
+}
+
+message PayLotteryReward
+{
+  uint32 No = 1;  //序号
+  uint32 Probability = 2;  //概率
+  RewardInfo  Reward = 3; //奖励
+  bool   IsGuarantee = 4; //是否保底（不展示）
+}
+
+message TurntableReward
+{
+  uint32 No = 1; //序号
+  uint32 Probability = 2; //概率
+  RewardInfo  Reward = 3; //奖励
+}
+
+message ActivityConfigBattle
+{
+  uint32 BattleType = 1;  //对局类型
+  uint32 OutcomeType = 2; //胜负类型
+  repeated  ConditionAndReward  ConditionAndRewardList = 3; //活动奖励和条件
+}
+
+message ActivityConfigPay
+{
+  uint32 PayType = 1; //支付类型
+  repeated  ConditionAndReward  ConditionAndRewardList = 2; //活动奖励和条件
+}
+
+message ActivityConfigPayLottery
+{
+  uint32 ConsumeItemID = 1; //消耗道具id
+  uint32 DayFreeDrawNum = 2;//每日免费抽奖次数
+  bool IsOpenLucky = 3; //是否开启幸运值逻辑
+  uint32    LuckyResetType = 4;//幸运值重置类型
+  uint32 MaxLuckyNum = 5;//幸运值最大数（保底数）
+  bool   IsOpenDrawNum = 6;//是否开启抽奖次数奖励
+  uint32  DrawResetType = 7;//抽奖次数重置类型
+  repeated ConditionAndReward  DrawNumRewardList = 8;//抽奖次数奖励列表
+  bool   IsOpenExchange = 9;//是否开启兑换列表
+  uint32 ExchangeConsumeItemID = 10;//兑换消耗道具id
+  repeated ConditionAndReward  ExchangeRewardList = 11;//抽奖次数奖励列表
+  repeated PayLotteryReward  PayLotteryRewardList = 12;//活动奖励和概率
+  uint32 TakeLuckyNum = 13; //获取幸运值配置-抽数"
+  uint32   LuckyNum = 14; //获取幸运值配置-获得幸运值"
+}
+
+message ActivityConfigTurntable
+{
+  uint32 FreeDrawNum = 1; //免费抽奖次数
+  uint32 TotalDrawNum = 2; //可使用总抽奖次数（含免费抽奖次数，动态值）
+  uint32 DrawNumConfig = 3; //对局N次获取抽奖
+  repeated TurntableReward  TurntableRewardList = 4; //活动奖励和概率
+  uint32 UseTotalDrawNum = 5; //已使用总抽奖次数(含免费抽奖次数)
+}
+
+message LoginActivityInfo
+{
+  string ActivityId = 1;      //活动唯一ID
+  int64  StartTime = 2 ;      //开始时间
+  int64  EndTime = 3;      //结束时间
+  uint32 AType = 4;      //活动模版
+  uint32 SubType = 5;      //活动主题类型
+  string ActivityName = 6;      //活动名称
+  ActivityConfigTurntable  ConfigTurntable = 7;     //转盘活动配置
+  ActivityConfigPayLottery  ConfigPayLottery = 8;    //付费抽奖活动配置
+  ActivityConfigPay    ConfigPay = 9;      //支付活动配置
+  ActivityConfigBattle  ConfigBattle = 10;    //对战活动配置
+  uint32  TimeType = 11 ;      //时间类型
+  KingRodeProgressList KingRodeProgressList =12;//王者之路进度列表
+}
+
+message DeleteActivity
+{
+  string ActivityId = 1;
+}
+
+message ActivityListUpdateNoticeSync
+{
+  bool IsUpdate = 1;
+}
+
+
+message GetActivityListRequest
+{
+  uint32  EntityId = 1;//用户ID
+}
+
+message GetActivityListResponse
+{
+  repeated LoginActivityInfo List = 1;
+}
+
+message ActivityProgress
+{
+  string  Id = 1;         //唯一id（活动-进度）
+  uint32  TargetProgress = 3;//条件值（目标值）
+  uint32  CompleteProgress = 4;//进度值
+  uint32  StateReward = 5;//领奖状态
+  uint32  ConfigSerial = 6;//配置奖励序号
+}
+
+message ActivityInfo
+{
+  string  ActivityId = 1; //活动唯一ID
+  repeated ActivityProgress List = 2;
+}
+
+//更新对战活动的进度
+message UpdateBattleActivityProgressResponse
+{
+  repeated ActivityInfo List = 1;
+}
+
+//更新支付活动的进度
+message UpdatePayActivityProgressResponse
+{
+  repeated ActivityInfo List = 1;
+}
+
+message TurntableInfo
+{
+  string  Id = 1;//唯一id（活动-进度）
+  string  ActivityId = 2;//活动唯一ID
+  uint32 TotalDrawNum = 3; //可使用总抽奖次数（含免费抽奖次数，动态值）
+}
+
+//更新转盘活动
+message UpdateTurntableActivityProgressResponse
+{
+  repeated TurntableInfo List = 1;
+}
+
+//领取对战活动奖励请求
+message ReceiveBattleActivityRequest
+{
+  uint32  EntityId = 1;//用户ID
+  string  ActivityId = 2;//活动唯一ID
+  uint32  ConfigSerial = 3;//配置奖励序号
+}
+//领取对战活动奖励返回
+message ReceiveBattleActivityResponse
+{
+  uint32 Code = 1;  //状态码
+  string  ActivityId = 2;
+  uint32  ConfigSerial = 3;//配置奖励序号
+}
+
+message ReceivePayActivityRequest
+{
+  uint32  EntityId = 1;   //用户ID
+  string  ActivityId = 2; //活动唯一ID
+  uint32  ConfigSerial = 3;      //配置奖励序号
+}
+
+message ReceivePayActivityResponse
+{
+  uint32 Code = 1;  //状态码
+  string  ActivityId = 2;//活动唯一ID
+  uint32  ConfigSerial = 3;//配置奖励序号
+}
+
+message ReceiveTurntableActivityRequest
+{
+  uint32  EntityId = 1; //用户ID
+  string  ActivityId = 2; //活动唯一ID
+}
+
+message ReceiveTurntableActivityResponse
+{
+  uint32 Code = 1;  //状态码
+  string  ActivityId = 2;
+  uint32  ConfigSerial = 3;//配置奖励序号
+  uint32 UseTotalDrawNum = 5; //已使用总抽奖次数(含免费抽奖次数)
+}
+
+message ReceivePayLotteryActivityRequest
+{
+  uint32  EntityId = 1; //用户ID
+  string  ActivityId = 2; //活动唯一ID
+}
+
+message ReceivePayLotteryActivityResponse
+{
+  uint32 Code = 1;  //状态码
+  string  ActivityId = 2;
+  uint32  ConfigSerial = 3;    //配置奖励序号
+}
+
+message ReceivePayLotteryDrawNumRequest
+{
+  uint32  EntityId = 1;   //用户ID
+  string  ActivityId = 2;   //活动唯一ID
+  uint32  ConfigSerial = 3;    //配置奖励序号
+}
+
+message ReceivePayLotteryDrawNumResponse
+{
+  uint32 Code = 1;  //状态码
+  string  ActivityId = 2;
+  uint32  ConfigSerial = 3;    //配置奖励序号
+}
+
+
+//--------------------------王者之路-----------------
+message KingRodeProgressList
+{
+  uint32 CompleteProgress = 1;//完成进度
+  repeated KingRodeReward RewardElite =2;//精英版
+  repeated KingRodeReward RewardAdvanced =3;//进阶版
+}
+
+message KingRodeReward
+{
+  uint32 RewardId =1;
+  uint32 StateReward =2;//0未解锁，1解锁不能领取，2可领取，3已领取
+}
+
+message KingRodeProgressSync
+{
+  uint32 CompleteProgress = 1;//完成进度
+//  repeated KingRodeReward RewardElite =2;//精英版
+//  repeated KingRodeReward RewardAdvanced =3;//进阶版
+}
+
+message KingRodeAdvancedUnlockRequest
+{
+  uint32 EntityID =1;
+  string ActivityId =2;//活动ID
+}
+
+message KingRodeAdvancedUnlockResponse
+{
+  uint32 Code =1;//0解锁成功，1解锁失败
+}
+
+message ReceiveKingRodeActivityRewardRequest
+{
+  uint32 EntityID =1;
+  string ActivityId =2;//活动ID
+  uint32 RewardType =3;//0全部，1表示精英版，2表示进阶版,3只领取精英和进阶本组数据
+  uint32 RewardId =4;//传0表示领取全部，传大于0表示领取某个id
+}
+
+message ReceiveKingRodeActivityRewardResponse
+{
+  uint32 Code =1;//0领取成功，1领取失败
+  string ActivityId =2;//活动ID
+  uint32 RewardType =3;//0全部，1表示精英版，2表示进阶版,3只领取精英和进阶本组数据
+  uint32 RewardId =4;//传0表示领取全部，传大于0表示领取某个id
+}
+
+//--------------------------王者之路-----------------
+
+
+message LoginNoticeInfo
+{
+  string    LoginNoticeId = 1;
+  string    Name = 2;
+  string    Context = 3;
+  int64      StartTime = 4 ;
+  int64      EndTime = 5;
+  string Title  = 6;
+}
+
+//-------------------------定时登录奖励开始----------------
+
+message LoginReward
+{
+  uint32 TimeKey =1;//key
+  bool IsReward =2;//false未领取，true已领取
+}
+
+//领取奖励
+message LoginRewardClaimRequest
+{
+  uint32 EntityID =1;//id
+  uint32 TimeKey =2;//key
+  uint32 RewardType =3;//0正常领取，1视频补领
+}
+
+//领取奖励返回
+message LoginRewardClaimResponse
+{
+  uint32 Code =1;//0领取成功，1领取失败
+  LoginReward LoginReward =2;//
+}
+//------------------------定时登录奖励结束-----------------
+

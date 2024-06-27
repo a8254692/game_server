@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./;msg";
+
+message InRankInfo
+{
+  uint32 EntityID = 1;
+  string Name = 2;
+  uint32 Icon = 3;
+  uint32 IconFrame = 4;
+  uint32 Sex = 5;
+  uint32 Num = 6;
+  uint32 VipLv = 7;
+  uint32 PeakRankLv = 8;
+  uint32 PeakRankStar = 9;
+  repeated uint32 ItemIds = 10;
+}
+
+//排行榜
+message InRankingsDbDataRequest {
+  uint32 RankType = 1;
+}
+
+message InRankingsDbDataResponse
+{
+  uint32 Code = 1;  //状态码
+  uint32 RankType = 2;
+  repeated InRankInfo List = 3;  //球杆榜列表
+}
+
+//好友排行榜
+message InRankingsFriendDbDataRequest {
+  uint32 RankType = 1;
+  uint32 EntityID = 2;
+}
+
+message InRankingsFriendDbDataResponse
+{
+  uint32 Code = 1;  //状态码
+  uint32 RankType = 2;
+  uint32 EntityID = 3;
+  repeated InRankInfo List = 4;  //列表
+}
+
+message PopRank
+{
+  uint32 EntityID =1;
+  uint32 PopularityValue =2;//人气值
+  string PlayerName = 3; //角色名称
+  uint32 PlayerIcon = 4; //角色头像
+  uint32 IconFrame = 5;//头像相框
+  uint32 VipLv = 6; //Vip等级
+  uint32 Sex = 7; //性别
+}
+
+//人气排行榜
+message InPopularityRankRequest
+{
+  uint32 MaxRankNum =1;
+}
+
+message InPopularityRankResponse
+{
+  repeated InGiftInfo TotalList =1;
+  repeated InGiftInfo WeekList =2;
+}
+
+message InGiftInfo
+{
+  uint32 EntityID = 1;
+  string PlayerName = 2; //角色名称
+  uint32 PlayerIcon = 3; //角色头像
+  uint32 IconFrame = 4;//头像相框
+  uint32 VipLv = 5; //Vip等级
+  uint32 Sex = 6; //性别
+  uint32 PopularityValue = 7;//人气值
+  int64 AddTamp =8;
+}

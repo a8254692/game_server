@@ -1,0 +1,637 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./;msg";
+import "reward.proto";
+
+enum PositionType {
+  General = 0; //普通成员
+  Elite =1; //精英
+  Second_Master = 2; //副部长
+  Master = 3; //部长
+}
+
+enum ClubRateType{
+    ClubRateDefault =0;
+    ClubRateE = 1;
+    ClubRateD = 2;
+    ClubRateC =3;
+    ClubRateB =4;
+    ClubRateA =5;
+    ClubRateS =6;
+    ClubRateSPlus =7;
+}
+
+// 俱乐部列表
+message ClubListRequest
+{
+  uint32 EntityID =1;
+  optional uint32 ClubID =2; //俱乐部id
+  optional bool IsJoinLevel =3;//满足条件
+  optional uint32 PlayerLV =4; //角色等级，可传0
+  uint32 PageSize =5;
+  uint32 PageNum =6;
+}
+
+// 俱乐部列表
+message ClubListResponse
+{
+  uint32 Code =1;
+  repeated ClubInfo List =2;
+  uint32 EntityID =3;
+  uint32 Total =4;
+  uint32 PageSize =5;
+}
+
+message ClubInfo
+{
+  uint32 ClubID =1;
+  uint32 ClubBadge =2;
+  string ClubName =3;
+  uint32 ClubRate =4;
+  uint32 ClubLV =5;
+  uint32 Num =6;
+  uint32 MaxNum =7;
+  uint32 JoinLevel =8;
+  uint32 MasterEntityID =9;
+  string MasterPlayerName =10;
+  uint32 MasterPlayerIcon =11;
+  string ClubNotice =12;
+}
+
+// 俱乐部创建
+message ClubCreateRequest
+{
+  uint32 EntityID =1;
+  string ClubName =2;
+  uint32 ClubBadge =3;
+  string ClubNotice =4;
+}
+
+// 俱乐部创建
+message ClubCreateResponse
+{
+  uint32 MasterEntityID =1;
+  uint32 Code =2;
+  uint32 ClubID =3;
+}
+
+// 前10俱乐部请求
+message ClubTop10Request
+{
+  uint32 EntityID =1;
+}
+
+// 前10俱乐部返回
+message ClubTop10Response
+{
+  uint32 EntityID =1;
+  repeated ClubTop10Info List =2;
+}
+
+message ClubTop10Info
+{
+  uint32 ClubID =1;
+  uint32 ClubBadge =2;
+  string ClubName =3;
+  uint32 ClubRate =4;
+  uint32 MasterEntityID =5;
+  string MasterPlayerName =6;
+  uint32 MasterPlayerIcon =7;
+  uint32 ClubScore =8;
+  uint32 Num =9;
+}
+
+// 俱乐部审核成员加入请求
+message ClubRatifyJoinRequest
+{
+  uint32 EntityID =1;
+  repeated JoinEntityIDList List =2;
+  uint32 ClubID =3;
+}
+
+message JoinEntityIDList
+{
+  uint32 EntityID =1;
+  bool IsJoin =2; // true批准,false拒绝
+}
+
+// 俱乐部审核成员加入返回
+message ClubRatifyJoinResponse
+{
+  uint32 EntityID =1;
+  uint32 Code =2; // 0成功，1权限不足或者俱乐部不存在，2超过上限人数
+}
+
+// 退出俱乐部
+message ClubExitRequest
+{
+  uint32 EntityID =1;
+}
+
+// 退出俱乐部
+message ClubExitResponse
+{
+  uint32 EntityID =1;
+  uint32 Code =2;
+}
+
+// 修改俱乐部请求
+message UpdateClubRequest
+{
+  uint32 EntityID =1;
+  optional string ClubNotice =2;
+  optional uint32 JoinLevel =3;
+  optional bool IsOpen =4;
+  optional string ClubName =5;
+}
+
+// 修改俱乐部响应
+message UpdateClubResponse
+{
+  uint32 EntityID =1;
+  uint32 Code =2;
+}
+
+// 俱乐部成员列表
+message ClubMembersListRequest
+{
+  uint32 EntityID =1;
+  uint32 ClubID =2;
+}
+
+// 俱乐部成员列表
+message ClubMembersListResponse
+{
+  uint32 Code =1;
+  repeated MembersInfo List =2;
+}
+
+message MembersInfo
+{
+  uint32 EntityID =1;
+  uint32 position =2;//职位
+  uint32 Online =3;//0是在线，大于0就是不在线，时间单位分钟
+  uint32 ActiveValue =4;
+}
+
+// 俱乐部主页
+message ClubHomePageRequest
+{
+  uint32 EntityID =1;
+  uint32 ClubID =2;
+}
+
+// 俱乐部主页
+message ClubHomePageResponse
+{
+  uint32 Code =1;
+  optional ClubHome Data=2;
+  repeated MembersInfo List =3;
+  bool IsDailySignIn =4; // false未打卡，true打卡
+}
+
+message ClubHome
+{
+  uint32 ClubID =1;
+  uint32 ClubBadge =2;
+  string ClubName =3;
+  uint32 ClubRate =4;
+  uint32 ClubLV =5;
+  uint32 Num =6;
+  uint32 MaxNum =7;
+  string ClubNotice =8;
+  uint32 NumExp =9;
+  uint32 SecondMasterNum =10;//副部长人数
+  bool IsOpen =11;
+  uint32 JoinLevel =12;
+}
+
+// 加入俱乐部请求
+message ClubReqJoinRequest
+{
+  uint32 EntityID =1;
+  uint32 ClubID =2;
+}
+
+// 加入俱乐部响应
+message ClubReqJoinResponse
+{
+  uint32 EntityID =1;
+  uint32 Code =2;
+  uint32 ClubID =3;
+}
+
+// 取消加入俱乐部请求
+message ClubCancelJoinRequest
+{
+  uint32 EntityID =1;
+  uint32 ClubID =2;
+}
+
+// 取消加入俱乐部响应
+message ClubCancelJoinResponse
+{
+  uint32 EntityID =1;
+  uint32 Code =2;
+}
+
+// 任命副部长请求
+message CommissionSecondMasterRequest
+{
+   uint32 EntityID =1;
+   uint32 ClubID =2;
+   uint32 SecondMasterID =3;//副部长id
+   uint32 Position =4;
+}
+
+// 任命副部长响应
+message CommissionSecondMasterResponse
+{
+   uint32 EntityID =1;
+   uint32 Code =2;
+}
+
+// 转让部长请求
+message TransferMasterRequest
+{
+  uint32 EntityID =1;
+  uint32 NewMasterEntityID =2;
+}
+
+// 转让部长响应
+message TransferMasterResponse
+{
+  uint32 EntityID =1;
+  uint32 Code =2;
+}
+
+// 成员申请列表
+message ClubRatifyListRequest
+{
+  uint32 EntityID =1;
+  uint32 ClubID =2;
+}
+
+// 成员申请列表响应
+message ClubRatifyListResponse
+{
+  uint32 EntityID =1;
+  uint32 Code =2;
+  repeated uint32 List =3;
+}
+
+// 剔除成员
+message ClubDelMembersRequest
+{
+  uint32 EntityID =1;
+  uint32 DelEntityID =2;
+  uint32 ClubID =3;
+}
+
+// 剔除成员
+message ClubDelMemberResponse
+{
+  uint32 EntityID =1;
+  uint32 DelEntityID =2;
+  uint32 Code =3;
+}
+
+//**********俱乐部商店协议开始**********
+
+// 俱乐部商店信息
+message ClubShopItem
+{
+  uint32 ItemID = 1; //道具ID
+  uint32 TableID = 2; //商店配置表ID
+  uint32 BuyNum = 3; //购买次数
+  uint32 MaxBuyNum =4;//限购数量
+  bool IsUnlock = 5;//是否已解锁,true表示已解锁，可以购买，反之不能购买
+}
+
+//俱乐部商店数据请求
+message ClubShopListRequest
+{
+  uint32 EntityID =1;
+}
+
+//俱乐部商店数据返回
+message ClubShopListResponse
+{
+  uint32 EntityID =1;
+  uint32 Code = 2;//0表示获取成功，1表示失败（可能没刷新列表），或者用户没有俱乐部
+  repeated ClubShopItem ClubShopList = 3; //商店列表
+}
+
+//俱乐部商店购买请求
+message ClubShopBuyRequest
+{
+    uint32 EntityID = 1;
+    uint32 ItemID = 2; //道具ID
+    uint32 Num =3;//数量
+}
+
+//俱乐部商店购买返回
+message ClubShopBuyResponse
+{
+    uint32 Code = 1;  //状态码 0：购买成功，1:购买失败；2：货币不足；3：没有该商品道具或者未解锁；4：超过限购了
+    uint32 ItemID = 2; //道具ID
+    RewardInfo RewardInfo = 3;
+}
+
+//**********俱乐部商店协议结束**********
+
+
+
+//**********俱乐部红包协议开始**********
+
+// 俱乐部红包信息
+message ClubRedEnvelopeItem
+{
+  string RedEnvelopeID = 1; //红包ID
+  repeated ClubRedEnvelopeRecordItem ClubRedEnvelopeRecordList = 2; //红包领取列表
+  uint32 SendCoinNum = 3; //发送金额
+  uint32 TotalSendNum = 4; //总发送个数
+  uint32 SendEnvelopeEntityID = 5; //发送红包人ID
+  string SendEnvelopeEntityName = 6; //发送红包人名字
+  uint32 SendEnvelopeEntityAvatarID = 7; //发送红包人头像ID
+  uint32 SendEnvelopeEntityIconFrameID = 8; //发送红包人头像框ID
+  string BlessWorld = 9; //祝福语
+  int64 SendTime = 10;//发送时间
+}
+
+// 俱乐部红包领取记录信息
+message ClubRedEnvelopeRecordItem
+{
+  uint32 EntityID = 1; //领取人ID
+  string EntityName = 2; //领取人名字
+  uint32 GetCoinNum = 3; //领取金币数
+  int64 GetTime = 4; //领取时间
+}
+
+//俱乐部发送红包请求
+message ClubSendRedEnvelopeRequest
+{
+  uint32 EntityID = 1;
+  uint32 SendCoinNum = 2; //总金额
+  uint32 TotalSendNum = 3; //总个数
+  string BlessWorld = 4; //祝福语
+}
+
+//俱乐部发送红包返回
+message ClubSendRedEnvelopeResponse
+{
+  uint32 EntityID = 1;
+  uint32 Code = 2;//0成功，1失败，2金币不足
+}
+
+//俱乐部红包列表请求
+message ClubRedEnvelopeListRequest
+{
+  uint32 EntityID = 1;
+}
+
+//俱乐部红包列表返回
+message ClubRedEnvelopeListResponse
+{
+  uint32 EntityID = 1;
+  uint32 Code = 2;
+  repeated ClubRedEnvelopeItem ClubRedEnvelopeList = 3; //红包列表
+}
+
+//俱乐部红包领取记录请求
+message ClubRedEnvelopeRecordListRequest
+{
+  uint32 EntityID = 1;
+  string RedEnvelopeID = 2; //红包ID
+}
+
+//俱乐部红包领取记录返回
+message ClubRedEnvelopeRecordListResponse
+{
+  uint32 EntityID = 1;
+  uint32 Code = 2;
+  repeated ClubRedEnvelopeRecordItem ClubRedEnvelopeRecordList = 3; //红包记录列表
+}
+
+
+//俱乐部红包打开请求
+message ClubRedEnvelopeOpenRequest
+{
+    uint32 EntityID = 1;
+    string RedEnvelopeID = 2; //红包ID
+}
+
+//俱乐部红包打开返回
+message ClubRedEnvelopeOpenResponse
+{
+    uint32 Code = 1;  //状态码 1:已经领取过了;2:没有该红包ID
+    string RedEnvelopeID = 2; //红包ID
+    uint32 CoinNum = 3; //金币数
+    ClubRedEnvelopeItem ClubRedEnvelopeItem = 4; //红包信息
+}
+
+//俱乐部红包同步
+message ClubRedEnvelopeSync
+{
+  uint32 EntityID =1;//
+  ClubRedEnvelopeItem ClubRedEnvelopeItem = 2; //红包信息
+}
+
+//**********俱乐部红包协议结束**********
+
+
+//**********俱乐部基金协议开始**********
+
+// 俱乐部红包信息
+message ClubFundItem
+{
+  uint32 FundID = 1; //红包ID
+  uint32 FundEntityID = 2; //发送红包人ID
+  string FundEntityName = 3; //发送红包人名字
+  uint32 FundEntitySex = 4; //发送红包人性别
+  uint32 FundEntityAvatarID = 5; //发送红包人头像ID
+  uint32 FundEntityIconFrameID = 6; //发送红包人头像框ID
+  uint32 Contribution = 7; //贡献
+}
+
+//俱乐部基金列表请求
+message ClubFundListRequest
+{
+  uint32 EntityID = 1;
+}
+
+//俱乐部基金列表返回
+message ClubFundListResponse
+{
+  uint32 EntityID = 1;
+  uint32 Code = 2;
+  repeated ClubFundItem ClubFundList = 3; //红包列表
+}
+
+//**********俱乐部基金协议结束**********
+
+//**********俱乐部任务开始*************
+
+// 俱乐部活跃值领取奖励
+message ClubClaimTaskProgressRequest
+{
+  uint32 EntityID =1;
+  uint32 ClubProgressID =2;//领取的ID
+}
+
+// 俱乐部活跃值领取奖励
+message ClubClaimTaskProgressResponse
+{
+  uint32 Code =1;
+  uint32 ClubProgressID =2;//领取的ID
+}
+
+// 打卡请求
+message ClubDailySignInRequest
+{
+  uint32 EntityID =1;
+}
+
+// 打卡返回
+message ClubDailySignInResponse
+{
+  uint32 Code =1;
+}
+
+// 俱乐部任务表
+message ClubTaskListRequest
+{
+   uint32 EntityID =1;
+}
+
+// 俱乐部任务表返回
+message ClubTaskListResponse
+{
+  uint32 EntityID =1;
+  uint32 ClubActiveValue =2;// 俱乐部活跃值
+  uint32 MyActiveValue =3;//我的活跃值
+  repeated ClubProgressReward ClubProgressRewardList =4;// 俱乐部活跃领取
+  repeated ClubTaskProgress ClubTaskProgressList =5;//我的活跃领取表
+  repeated ClubWeekTask ClubTaskList =6;//俱乐部任务表
+}
+
+message ClubProgressReward
+{
+  uint32 ProgressID =1;
+  uint32 StateReward =2;// 0未领取，1已领取
+  uint32 Progress =3;//需要进度
+}
+
+message ClubTaskProgress
+{
+  uint32 ProgressID =1;
+  uint32 StateReward =2;// 0未领取，1已领取
+  uint32 Progress =3;//需要进度
+  uint32 ItemTableId = 4; //物品配置表ID
+  uint32 Num = 5; //物品数量
+}
+
+message ClubWeekTask
+{
+  uint32 TaskID =1;
+  uint32 State =2;//任务状态 0未完成，1完成
+  uint32 CompleteProgress =3;//已完成进度
+  uint32 TaskProgress =4;//任务需要的进度
+  repeated ClubDailyTask ClubDailyTaskList =5;//日任务
+}
+
+message ClubDailyTask
+{
+  uint32 State =2;//任务状态 0未完成，1完成
+  uint32 CompleteProgress =3;//已完成进度
+  uint32 TaskProgress =4;//任务需要的进度
+}
+
+// 赞助资金请求
+message ClubSupportRequest
+{
+  uint32 EntityID =1;
+}
+
+// 赞助资金返回
+message ClubSupportResponse
+{
+  uint32 Code =1;//0成功，1失败，2钻石不足
+}
+
+// 我的活跃值领取奖励
+message ClaimMyClubTaskProgressRequest
+{
+  uint32 EntityID =1;
+  uint32 ProgressID =2;//领取的ID
+}
+
+// 我的活跃值领取奖励
+message ClaimMyClubTaskProgressResponse
+{
+  uint32 Code =1;
+  uint32 ProgressID =2;//领取的ID
+}
+
+// 俱乐部评级列表
+message ClubRateListRequest
+{
+  uint32 EntityID =1;
+}
+
+// 俱乐部评级列表返回
+message ClubRateListResponse
+{
+  uint32 MyClubRate =1;//我的评级
+  uint32 MyClubRank =2;// 俱乐部名次
+  uint32 MyClubScore =3;//本周评分
+  repeated ClubRateInfo ClubRateList =4;
+}
+
+message ClubRateInfo
+{
+  uint32 ClubID =1;
+  string ClubName =2;
+  uint32 ClubBadge =3;
+  uint32 RateRank =4; //评级名次
+  uint32 ClubScore =5;// 评分
+  uint32 ClubRate =6;// 评级
+  uint32 RankTags =7;//排名升降，0不变，1升，2降
+  uint32 MasterEntityID =8;//俱乐部部长
+}
+
+// 殿堂级俱乐部列表
+message PalaceClubRateListRequest
+{
+  uint32 EntityID =1;
+}
+
+// 殿堂级俱乐部列表返回
+message PalaceClubRateListResponse
+{
+  repeated ClubRateInfo ClubRateList =1;
+}
+
+// 俱乐部盈利金币
+message ClubProfitGoldListRequest
+{
+  uint32 EntityID =1;
+}
+
+// 俱乐部盈利金币
+message ClubProfitGoldListResponse
+{
+  repeated ClubProfitGold ClubList =1;
+}
+
+message ClubProfitGold
+{
+  uint32 ClubID =1;
+  string ClubName =2;
+  uint64 ProfitGold =3;
+  uint32 Rank =4;//排名
+}
+
+
+//**********俱乐部任务结束*************

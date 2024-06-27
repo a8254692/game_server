@@ -1,0 +1,67 @@
+# Reference https://github.com/github/gitignore/blob/master/Go.gitignore
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Dependency directories (remove the comment below to include it)
+vendor/
+
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+*.o
+*.a
+
+# OS General
+Thumbs.db
+.DS_Store
+
+# Develop tools
+.vscode/
+.idea/
+*.swp
+.git/
+__debug_bin
+
+# project
+*.cert
+*.key
+*.log
+billiard/*
+/logdata
+
+/ClientTest/*.exe
+/CenterServer/*.exe
+/DBServer/*.exe
+/GameServer/*.exe
+/GateServer/*.exe
+/GateWsServer/*.exe
+/WebServer/*.exe
+/OtherServer/*.exe
+
+/ClientTest/ClientTest
+/CenterServer/CenterServer
+/DBServer/DBServer
+/GameServer/GameServer
+/GateServer/GateServer
+/GateWsServer/GateWsServer
+/WebServer/WebServer
+/OtherServer/WebServer
+
+/ClientTest/logdata/*
+/CenterServer/logdata/*
+/DBServer/logdata/*
+/GameServer/logdata/*
+/GateServer/logdata/*
+/GateWsServer/logdata/*
+/WebServer/logdata/*
+/OtherServer/logdata/*
+/BuildPackage
+OtherServer/OtherServer

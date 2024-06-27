@@ -1,0 +1,199 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./;msg";
+
+enum MsgType {
+  MtNone = 0;
+  MtGeneral = 1;  //普通消息
+  MtHorn = 2;  //喇叭消息
+  MtSystem = 3;  //系统消息
+  MtEmoticon = 4;  //表情包消息
+}
+
+//消息
+message MsgInfo
+{
+  uint32 MType = 1;  //消息类型
+  uint32 EntityID = 2;  //发消息人EntityID
+  string EntityName = 3;  //名字
+  uint32 EntitySex = 4;  //性别
+  uint32 EntityIcon = 5;  //头像
+  uint32 EntityIconFrame = 6;  //头像框
+  uint32 EntityVipLv = 7;  //vip等级
+  uint32 ChatBox = 8; //聊天框
+  string Content = 9; //消息内容
+  int64 CreatTime = 10; //时间戳
+  uint32 Designation = 11; //称号
+}
+
+//消息
+message PrivateChatEntity
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+  string EntityName = 2;  //名字
+  uint32 EntitySex = 3;  //性别
+  uint32 EntityIcon = 4;  //头像
+  uint32 EntityIconFrame = 5;  //头像框
+  uint32 EntityVipLv = 6;  //vip等级
+  uint32 RedDotNum = 7;  //红点展示数量
+}
+
+//获取世界消息
+message GetWorldMsgRequest
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+}
+
+//获取世界消息返回
+message GetWorldMsgResponse
+{
+  uint32  Code = 1;  //状态码
+  uint32 EntityID = 2;  //发消息人EntityID
+  repeated MsgInfo List = 3;
+}
+
+
+//获取俱乐部消息
+message GetClubMsgRequest
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+  uint32 ClubID = 2;  //俱乐部id
+}
+
+//获取俱乐部消息返回
+message GetClubMsgResponse
+{
+  uint32  Code = 1;  //状态码
+  uint32 EntityID = 2;  //发消息人EntityID
+  uint32 ClubID = 3;  //俱乐部id
+  repeated MsgInfo List = 4;
+}
+
+
+//获取私聊entity列表消息
+message GetPrivateChatEntityRequest
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+}
+
+//获取私聊entity列表消息返回
+message GetPrivateChatEntityResponse
+{
+  uint32  Code = 1;  //状态码
+  uint32 EntityID = 2;  //发消息人EntityID
+  repeated PrivateChatEntity List = 3;
+}
+
+//获取私聊消息
+message GetPrivateChatMsgRequest
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+  uint32 PrivateEntityID = 2;  //私聊对象EntityID
+}
+
+//获取私聊消息返回
+message GetPrivateChatMsgResponse
+{
+  uint32  Code = 1;  //状态码
+  uint32 EntityID = 2;  //发消息人EntityID
+  uint32 PrivateEntityID = 3;  //私聊对象EntityID
+  repeated MsgInfo List = 4;
+}
+
+
+//发送世界消息
+message SendWorldMsgRequest
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+  MsgType MType = 2;  //消息类型
+  string Context = 3;  //消息体
+}
+
+//同步世界消息
+message SendWorldMsgSync
+{
+  uint32  Code = 1;  //状态码
+  uint32 EntityID = 2;  //发消息人EntityID
+  MsgInfo Msg = 3;  //消息体
+}
+
+
+//发送俱乐部消息
+message SendClubMsgRequest
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+  uint32 ClubID = 2;  //俱乐部id
+  MsgType MType = 3;  //消息类型
+  string Context = 4;  //消息体
+}
+
+//同步俱乐部消息
+message SendClubMsgSync
+{
+  uint32  Code = 1;  //状态码
+  uint32 EntityID = 2;  //发消息人EntityID
+  uint32 ClubID = 3;  //俱乐部id
+  MsgInfo Msg = 4;  //消息
+}
+
+//发送私聊消息
+message SendPrivateChatMsgRequest
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+  uint32 PrivateEntityID = 2;  //私聊对象EntityID
+  MsgType MType = 3;  //消息类型
+  string Context = 4;  //消息体
+}
+
+//同步私聊消息
+message SendPrivateChatMsgSync
+{
+  uint32  Code = 1;  //状态码
+  uint32 EntityID = 2;  //发消息人EntityID
+  uint32 PrivateEntityID = 3;  //私聊对象EntityID
+  MsgInfo Msg = 4;  //消息
+}
+
+//跑马灯消息
+message MarqueeMsgSync
+{
+  uint32 MarqueeType = 1;  //跑马灯类型
+  string Context = 2;  //消息体
+}
+
+message UpdateFansUnixSec
+{
+  uint32 EntityID =1;
+}
+
+//查看私聊消息
+message SeePrivateChatMsgRequest
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+  uint32 PrivateEntityID = 2;  //私聊对象EntityID
+}
+
+//查看私聊消息返回
+message SeePrivateChatMsgResponse
+{
+  uint32  Code = 1;  //状态码
+  uint32 EntityID = 2;  //发消息人EntityID
+  uint32 PrivateEntityID = 3;  //私聊对象EntityID
+}
+
+
+//删除私聊entity
+message DelPrivateChatEntityRequest
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+  uint32 PrivateEntityID = 2;  //私聊对象EntityID
+}
+
+//删除私聊entity返回
+message DelPrivateChatEntityResponse
+{
+  uint32  Code = 1;  //状态码
+  uint32 EntityID = 2;  //发消息人EntityID
+  uint32 PrivateEntityID = 3;  //私聊对象EntityID
+}

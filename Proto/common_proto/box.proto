@@ -1,0 +1,111 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./;msg";
+import "reward.proto";
+
+// 解锁宝箱
+message BoxUnlockRequest
+{
+  uint32 EntityID =1;
+  uint32 BoxID =2;
+  string ID =3;
+}
+
+// 解锁宝箱
+message BoxUnlockResponse
+{
+  int64 CountDown =1;
+  uint32 BoxID =2;
+  string ID =3;
+  uint32 Code =4;//0解锁成功，1失败
+  int64 UnlockTimeStamp =5;//开箱时间戳
+}
+
+// 宝箱列表
+message BoxListRequest
+{
+  uint32 EntityID =1;
+}
+
+message BoxListResponse
+{
+  repeated Box BoxList =1;
+}
+
+message Box
+{
+  string ID =1;//唯一id
+  uint32 BoxNum =2;//宝箱位置
+  uint32 BoxID =3;//宝箱tableid
+  int64 UnlockTimeStamp =4;// 时间戳，0表示未解锁，大于0表示已解锁，跟当前时间对比，当前时间大于等于UnlockTimeStamp，表示可以领取。
+  uint32 ReduceTime =5;//扣减的秒数
+}
+
+// 领取神秘宝箱
+message ClaimMagicBoxRequest
+{
+  uint32 EntityID =1;
+  uint32 BoxID =2;
+  string ID =3;
+  string Uuid =4;
+}
+
+// 领取神秘宝箱
+message ClaimMagicBoxResponse
+{
+  uint32 Code =1;//0领取成功，1失败
+}
+
+// 直接打开宝箱
+message BoxOpenRequest
+{
+  uint32 EntityID =1;
+  uint32 BoxID =2;
+  string ID =3;
+}
+
+// 直接打开宝箱
+message BoxOpenResponse
+{
+  uint32 Code =1;//0处理成功刷新列表，1处理失败
+  Box BoxItem =2;
+  repeated RewardInfo RewardList = 3; // 物品列表
+  string Uuid =4;
+}
+
+
+// 宝箱加速
+message BoxFastForwardRequest
+{
+  uint32 EntityID =1;
+  uint32 BoxID =2;
+  string ID =3;
+}
+
+// 宝箱加速
+message BoxFastForwardResponse
+{
+  uint32 Code =1;//0处理成功刷新列表，1处理失败
+  uint32 BoxID =2;
+  string ID =3;
+  int64 UnlockTimeStamp =4;// 时间戳，0表示未解锁，大于0表示已解锁，
+  uint32 ReduceTime =5;//扣减的秒数
+}
+
+// 领取宝箱
+message BoxClaimRewardRequest
+{
+  uint32 EntityID =1;
+  uint32 BoxID =2;
+  string ID =3;
+}
+
+// 领取宝箱
+message BoxClaimRewardResponse
+{
+  uint32 Code =1;//0处理成功刷新列表，1处理失败,2宝箱未到解锁时间
+  Box BoxItem =2;
+  repeated RewardInfo RewardList = 3; // 物品列表
+  string Uuid =4;
+}

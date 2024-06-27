@@ -1,0 +1,951 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./;msg";
+import "reward.proto";
+import "task.proto";
+import "vip.proto";
+import "box.proto";
+import "club.proto";
+import "activity.proto";
+import "shop.proto";
+
+//*****************************实体 帐号基本信息相关*****************************
+//实体 帐号基本信息
+message EntityAcc
+{
+  uint32 EntityId = 1; //entityid,由服务器生成的账号唯一id
+  string Token = 2; //本次登录的Token，没有SDK的话为空，有些SDK可能也为空
+  optional bool LoginFlag = 3; //登录状态
+  optional string AccUnique = 4; //(多服的)唯一帐号
+  optional string PassWord = 5; //创建时间
+  optional string TimeCreate = 6; //创建时间
+  optional string TimeUpdate = 7; //更新时间
+  optional string TimeExit = 8; //退出时间
+  optional bool IsIPhone = 9; //是否苹果设备
+  optional string ServerId = 10; //服务器id
+  optional string DeviceId = 11; //设备Id
+  optional string Machine = 12; //机型
+  optional bool BanSpeechFlag = 13; //是否禁言
+  optional string RemoteAddr = 14; //远端ip
+  optional string PackageName = 15; //当前客户端包名
+  optional uint32 Language = 16; //玩家的语言标记
+  optional uint64 TimeTotal = 17; //总在线时长(秒)
+  uint32 Platform = 18;         //平台
+  uint32 LoginPlatform = 19;         //登录平台
+  uint32 Channel = 20;         //渠道
+
+  repeated UnitPlayerBase ListPlayer = 21; //角色基本信息列表
+}
+
+//主要的实体对象，包含多个实体部件
+message UnitPlayerBase {
+  optional uint32 EntityID = 1; //EntityID
+  optional uint32 PlayerID = 2; //角色ID
+  optional string PlayerName = 3; //角色名称
+  optional uint32 PlayerLv = 4; //角色等级
+  optional uint32 Sex = 5; //角色性别
+  optional string TimeCreate = 6; //创建时间
+}
+
+//角色对象
+message EntityPlayer{
+  uint32 EntityID = 1; //EntityID
+  uint32 PlayerID = 2; //角色ID
+  optional uint32 State = 3; //当前状态
+  optional bool FlagChange = 4; //是否被修改
+  optional bool FlagKick = 5; //被T标记
+  optional string AccUnique = 6; //帐号
+  optional string TimeCreate = 8; //创建时间
+  optional string TimeUpdate = 9; //更新时间
+  optional string TimeExit = 10; //退出时间
+  optional uint32 TimeTotal = 11; //总在线时长(秒)
+  optional uint32 PlayerLv = 12; //角色等级
+  optional string PlayerName = 13; //角色名称
+  optional uint32 PlayerIcon = 14; //角色头像
+  optional uint32 NumGold = 15; //金币数量
+  optional uint32 NumStone = 16; //钻石数量
+  optional uint32 NumPower = 17; //体力数量
+  optional uint32 NumExp = 18; //经验数量
+  optional uint32 FightValue = 19; //战斗值
+  optional uint32 AdvExp = 20; //进阶所需经验
+  optional uint32 VipLv = 21; //Vip等级
+  optional uint32 VipExp = 22; //Vip经验
+  optional uint32 Sex = 23; //性别
+  optional bool Online = 24; //是否在线
+  optional uint32 ClubId = 25;  // 俱乐部id
+  optional uint32 ClubRate = 26;   // 俱乐部评级
+  optional string PlayerSign = 27;  // 个性签名
+  optional uint32 CueTableId = 28;   // 使用球杆id
+  optional uint32 CollectId = 29;  // 称号id
+  optional uint32 Badge = 30;      // 徽章
+  optional uint32 PopularityValue = 31; // 人气值
+  optional uint32 BattingEffect = 32;   // 击球特效
+  optional uint32 GoalInEffect = 33;  // 入球效果
+  optional uint32 CueBall = 34;   // 主球
+  optional uint32 PlayerDress = 35;  // 人物着装
+  optional uint32 PlayerBGImg = 36;  // 人物背景
+  optional uint32 TableCloth = 37;  // 桌布
+  optional uint32 ClothingIcon = 38;  //装扮头像
+  optional uint32 IconFrame = 39; //装扮头像框
+  optional uint32 ClothingCountDown = 40; //装扮倒计时
+  optional uint32 ClothingBubble = 41; //装扮气泡
+  optional uint32 CharmNum = 42;       //魅力值
+  optional uint32 PeakRankLv = 43;       //巅峰等级
+  optional uint32 PeakRankExp = 44;       //巅峰赛星数
+  optional uint32 FansNum = 45;       //粉丝数
+  optional string ClubName = 46; //俱乐部名称
+  optional bool OpenGifts = 47;// 是否公开赠送
+  optional uint32 AchievementLV = 48; // 人物当前成就等级
+  optional uint32 AchievementScore = 49;// 人物当前成就积分
+  optional uint32 ClubNumGold = 50;//俱乐部币
+  optional uint32 ExchangeGold = 51;//兑换卷
+  optional uint32 ClubBadge = 52;//俱乐部徽章
+  optional uint32 ShopScore = 53;//商城积分
+}
+
+//上报前端机器数据请求 1 face  2face
+message ReportPhoneInfoRequest
+{
+  string Account = 1;  //账号
+  string PassWord = 2;  //密码
+  string Token = 3;  //SDK登录的token
+  string DeviceId = 4;    //设备Id
+  uint32  ChannelId = 5;    //渠道Id
+  string Machine = 6;    //机型
+  string PackageName = 7;    //包名
+  uint32  Language = 9;  //语言标记数字类型
+  string LanguageFlag = 10;  //语言标记SDK的类型
+  uint32 EntityId = 11;    //EntityId,由服务器生成的实体唯一id
+  string Version = 12;    //资源版本号
+  uint32 OsType = 13;    //系统类型(0-无效;1-android;2-ios;3-unity)
+}
+
+//上报前端机器数据回应
+message ReportPhoneInfoResponse
+{
+  uint32 Result = 1; //结果，0：成功，否则失败(1000表示账号被封;1014表示服务器火爆，正在排队进入游戏世界，请耐心等待)
+  uint32 EntityId = 2; //账号唯一id
+  string Token = 3;  //SDK登录的token
+  uint32 ForbidLeftTime = 6; //封号剩余时长（秒）
+}
+
+//获取角色列表应答
+message PlayerListResponse
+{
+  uint32 Result = 1; //结果，0：成功，否则失败
+  uint32 Code = 2;   //错误代码
+}
+
+//创建角色请求
+message PlayerCreateRequest
+{
+  uint32 EntityId = 1;    //EntityId
+  string Name = 2; //角色名
+  optional uint32 Job = 3; //角色职业
+  optional uint32 Sex = 4; //性别，0女，1男
+  optional uint32 Icon = 5;//头像索引
+}
+
+//创建角色应答
+message PlayerCreateResponse
+{
+  uint32 Result = 1; //结果，0：成功，否则失败
+  uint32 Code = 2;   //错误代码 1重名，2.……
+  uint32 EntityId = 3; //实体EntityIdID
+}
+
+//帐号数据同步
+message MainAccSync
+{
+  uint32 EntityId = 1;    //EntityId
+  EntityAcc MainAcc = 2;   //错误代码
+}
+
+//主要角色数据同步
+message MainPlayerSync
+{
+  uint32 EntityId = 1;    //EntityId
+  EntityPlayer MainPlayer = 2;   //角色信息
+  repeated FriendList MyFriends = 3;// 关注列表
+  repeated FansList MyFans = 4; // 粉丝列表
+  repeated TaskInfo TaskList = 5;//任务列表
+  uint32 DayProgress = 6;//今日进度活跃值
+  uint32 WeekProgress = 7;//周进度活跃值
+  repeated Progress DayProgressList = 8; //日活跃进度领取表
+  repeated Progress WeekProgressList = 9;//周活跃进度领取表
+  AchievementLvCanClaimReward AchievementLvCanClaimReward = 10;//成就等级领取表
+  repeated CollectInfo CollectList = 11;//称号列表
+  ReceiveStatus     VipDailyGetBoxStatus = 12;  //领取vip今日礼包状态
+  repeated VipInfo VipInfoList = 13;  //vip列表
+  repeated ElemBook CueHandBookList = 14;//图鉴列表
+  repeated Box BoxList = 15;//宝箱列表
+  repeated Email EmailList = 16; //邮件列表
+  repeated ItemInfo Items = 17; // 所有道具
+  uint32 AddFansNum = 18;//新增粉丝数量
+  ClubTaskListResponse ClubTaskList = 19;//俱乐部任务列表
+  repeated ClubRedEnvelopeItem ClubRedEnvelopeList = 20; //红包列表
+  uint32 FriendMsgRedDotNum = 21; //好友聊天列表红点展示数量
+  repeated LoginActivityInfo ActivityList = 22; //活动列表
+  PeakRankInfo PeakRankInfoSettle = 23; //天梯结算数据
+  repeated  LoginNoticeInfo LoginNoticeList = 24; //登录公告列表
+  repeated  PointsShopInfo PointsShopList = 25; //积分商城列表
+  repeated LoginReward RewardList =26;//定时登录奖励列表
+  bool IsHaveRecharge = 27;//是否已经充值
+}
+
+//进入游戏请求
+message EnterGameRequest
+{
+  uint32 EntityId = 1;    //EntityId,由服务器生成的实体唯一id
+  string Token = 2;  //SDK登录的token
+  optional uint32 State = 3;    //前端状态
+  optional uint32 ServerID = 4;    //服务器ID
+}
+
+//进入游戏应答
+message EnterGameResponse
+{
+  uint32 Result = 1; //结果，0：成功，否则失败
+  uint32 Code = 2;   //错误代码 1无角色
+  uint32 EntityId = 3; //实体EntityIdID
+  optional uint32 State = 4;    //状态
+}
+
+//心跳请求
+message HeartBeatRequest
+{
+  uint32 EntityId = 1; //实体EntityIdID
+  uint32 ReqTime = 2; //请求发送时间
+}
+//
+message HeartCH
+{
+  uint32 EntityId = 1; //实体EntityIdID
+  uint32 ReqTime = 2; //请求发送时间
+}
+
+//心跳应答
+message HeartBeatResponse
+{
+  uint32 Result = 1; //结果，0：成功，否则失败
+  uint32 Code = 2;   //错误代码
+  uint32 EntityId = 3; //实体EntityIdID
+  optional uint64 ReqTime = 4; //请求发送时间（可以看收到消息耗时多久）
+  optional uint64 CurTime = 5; //服务器当前时间（毫秒）
+  optional uint32 ServerState = 6; //服务器状态（宕机时候有用）
+}
+
+// 断开连接发消息至游戏服
+message EntityOfflineToGameRequest
+{
+  uint32 EntityID = 1; //EntityID
+}
+
+//请求修改角色名
+message ChangePlayerNameRequest
+{
+  uint32 EntityId = 1;    //EntityId
+  optional string PlayerName = 2;    //新的角色名
+}
+
+//请求修改角色名返回
+message ChangePlayerNameResponse
+{
+  uint32 EntityId = 1;    //EntityId
+  uint32 Code = 2;    //错误代码
+  optional string PlayerName = 3;    //新的角色名
+}
+
+//请求修改玩家头像
+message ChangePlayerIconRequest
+{
+  uint32 EntityID = 1;       //EntityID
+  optional uint32 PlayerIcon = 2;     //角色头像
+}
+
+//修改玩家头像返回
+message ChangePlayerIconResponse
+{
+  uint32 EntityID = 1;    //EntityID
+  uint32 Code = 2;    //错误代码
+  optional uint32 PlayerIcon = 3;     //角色头像
+}
+
+// 修改用户签名请求
+message ChangePlayerSignRequest
+{
+  uint32 EntityID = 1; //EntityID
+  optional string PlayerSign = 2; //角色签名
+}
+
+// 修改用户签名返回
+message ChangePlayerSignResponse
+{
+  uint32 EntityID = 1; //EntityID
+  uint32 Code = 2; // 错误代码
+  optional string PlayerSign = 3; //角色签名
+}
+
+message CueData
+{
+  uint32 TableID = 1;//球杆id
+  uint32 CharmScore = 2;//魅力值
+}
+
+// 用户个人基础信息
+message QueryEntityPlayerByIDRequest
+{
+  uint32 EntityID = 1; // EntityID
+  repeated uint32 QueryEntityID = 2; // 被查询者ID
+}
+
+// 用户个人基础信息
+message QueryEntityPlayerByIDResponse
+{
+  uint32 Code = 1;
+  uint32 EntityID = 2; // 查询者ID
+  repeated PlayerBase Player = 4;   // 角色信息
+}
+
+message PlayerBase
+{
+  uint32 EntityID = 1; //EntityID
+  uint32 PlayerLv = 3; //角色等级
+  string PlayerName = 4; //角色名称
+  uint32 PlayerIcon = 5; //角色头像
+  uint32 IconFrame = 6;//头像相框
+  uint32 VipLv = 7; //Vip等级
+  uint32 Sex = 8; //性别
+  string CurrentLoginTime = 9;//上一次登录时间
+  uint32 PeakRankLv = 10;//角色段位
+}
+
+// 修改性别请求
+message ChangePlayerSexRequest
+{
+  uint32 EntityID = 1;
+}
+
+// 修改性别返回
+message ChangePlayerSexResponse
+{
+  uint32 EntityID = 1;
+  uint32 Code = 2;//0成功，1材料不足
+}
+
+// 查看个人信息
+message PlayerInfoRequest
+{
+  uint32 EntityID = 1; //EntityID
+  optional uint32 QEntityID = 2;//他人id
+  optional bool IsOpen = 3;//是否打开个人信息
+}
+
+// 查看个人信息
+message PlayerInfoResponse
+{
+  uint32 EntityID = 1; //EntityID
+  optional uint32 QEntityID = 2;//他人id
+  EntityPlayer MainPlayer = 3;
+  bool IsFriend = 4;// 是否关注
+  optional bool IsOpen = 5;
+  repeated CueData CueList = 6; // 球杆列表
+  uint32 CueNum = 7; //球杆总数
+  uint32 CueCharmScore =8;//魅力总分
+  PlayStatisticsData PlayStatisticsData =9;//游戏生涯
+  repeated GiftData ReceivingGiftsRank = 10;//守护榜（收到礼物）
+  repeated GiftData ReceivingGiftsList = 11;//收到礼物记录表
+  repeated GiftData TAGiftsList =12;//TA赠送统计
+  bool OpenGifts = 13;// 是否公开赠送
+}
+
+// 角色游戏统计
+message PlayStatisticsData
+{
+  uint32 ReceivingGifts = 1;//接收的礼物数量
+  uint64 ProfitGold = 2;//累计盈利
+  uint32 OneCueClear = 3;//一杆清台
+  uint32 AccumulateGoal = 4;//累计进球
+  uint32 C8MaxContinuousWin = 5;//最高连胜
+  repeated GameStatistics List = 6;
+  uint32 AchievementLV = 7;//成就等级
+  uint32 PeakRankLv = 8;//角色天梯等级
+}
+
+//游戏详情
+message GameStatistics
+{
+  uint32 GameType = 1;//模式 0是8球模式，1疯狂血流，2斯洛克，3闯关，4极限挑战
+  uint32 PlayNum = 2;//对局数
+  float WinPer = 3;//胜率
+  uint32 OneCueClear = 4;//一杆清台
+  uint32 C8MaxContinuousWin = 5;//最高连胜
+  float EscapePer = 6;//逃跑率
+}
+
+message PlayerLvExpSync
+{
+  uint32 PlayerLv = 1; //用户等级
+  uint32 NumExp = 2; //用户经验
+}
+
+message PlayerCoinSync
+{
+  uint32 Coin = 1; //金币
+}
+
+message PlayerDiamondSync
+{
+  uint32 Diamond = 2; //钻石
+}
+
+message PlayerIconSync
+{
+  uint32 PlayerIcon = 1; //用户头像ID
+}
+
+message PlayerVipLvExpSync
+{
+  uint32 Lv = 1; //等级
+  uint32 Exp = 2; //经验
+}
+
+message PlayerPeakRankLvExpSync
+{
+  uint32 Lv = 1; //等级
+  uint32 Exp = 2; //经验
+}
+
+message ClubToPlayerSync
+{
+  uint32 ClubID = 1;
+  string ClubName = 2;
+  uint32 ClubBadge = 3;//俱乐部徽章
+  uint32 ClubRate =4;//评级
+}
+
+// 同步粉丝数
+message FansNumPlayerSync
+{
+  uint32 FansNum = 1;
+  repeated FansList List = 2;
+  uint32 EntityID = 3;//被推送人id
+}
+
+// 称号同步
+message PlayerCollectIDSync
+{
+  uint32 CollectID = 1;
+}
+
+// 成就等级和积分同步
+message PlayerAchievementLVAndScoreSync
+{
+  uint32 AchievementLV = 1; // 人物当前成就等级
+  uint32 AchievementScore = 2;// 人物当前成就积分
+}
+
+//角色装扮同步
+message PlayerClothingSync
+{
+  uint32 PlayerIcon = 1; //用户头像
+  uint32 IconFrame = 2; //装扮头像框
+  uint32 ClothingCountDown = 3; //装扮倒计时
+  uint32 ClothingBubble = 4; //装扮气泡
+}
+
+//球杆同步
+message PlayerCueInfoSync
+{
+  uint32 CueTableId = 1;
+}
+
+//服装同步
+message PlayerDressSync
+{
+  uint32 PlayerDress = 1;
+}
+
+//角色特效同步
+message PlayerEffectSync
+{
+  uint32 BattingEffect = 1;   // 击球特效
+  uint32 GoalInEffect = 2;  // 入球效果
+  uint32 CueBall = 3;   // 主球
+  uint32 TableCloth = 4;  // 桌布
+}
+
+//角色属性道具同步（公用接口）
+message PlayerPropertyItemSync
+{
+  PropertyItem Item = 1;//属性道具
+}
+
+message PropertyItem
+{
+  uint32 TableID = 1;//道具id
+  uint32 ItemValue = 2;//值
+}
+
+//角色多个属性道具同步（公用接口）
+message PlayerRepeatedPropertyItemSync
+{
+  repeated PropertyItem Items= 1;//属性道具
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~实体 帐号基本信息结束~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+//***********************************守护榜相关*****************************
+
+
+// 修改查看赠送礼物开关
+message ChangPlayerOpenGiftsRequest
+{
+  uint32 EntityID = 1;
+  optional bool OpenGifts = 2;
+}
+
+message ChangPlayerOpenGiftsResponse
+{
+  uint32 Code = 1;
+}
+
+message GiftData
+{
+  uint32 EntityID = 1;
+  uint32 PlayerLv = 2; //角色等级
+  string PlayerName = 3; //角色名称
+  uint32 PlayerIcon = 4; //角色头像
+  uint32 IconFrame = 5;//头像相框
+  uint32 VipLv = 6; //Vip等级
+  uint32 Sex = 7; //性别
+  uint32 PopularityValue = 8;//人气值
+  string LastAddTime = 9;//最近一次赠送时间
+  repeated GiftIds GiftsList = 10;//礼物列表
+  uint32 GiveNum = 11;//赠送次数
+}
+
+message GiftIds
+{
+  uint32 GiftID = 1;//道具id
+  uint32 Number = 2;//道具数量
+}
+
+message GiftInfo
+{
+  uint32 EntityID = 1;
+  string PlayerName = 2; //角色名称
+  uint32 PlayerIcon = 3; //角色头像
+  uint32 IconFrame = 4;//头像相框
+  uint32 VipLv = 5; //Vip等级
+  uint32 Sex = 6; //性别
+  uint32 PopularityValue = 7;//人气值
+}
+
+//***********************************守护榜相关*****************************
+
+
+
+//*****************************背包信息相关*****************************
+//球杆信息
+message CueInfo
+{
+  uint32 Quality = 1; //阶级
+  uint32 Star = 2; // 星级
+}
+//道具信息
+message ItemInfo
+{
+  optional uint32 ItemID = 1; //道具ID
+  uint32 TableID = 2; // 表格ID
+  uint32 ItemType = 3; // 1 ---> 球杆,2 ----> 服装,3 ----> 特效,4----> 道具,5--->装扮
+  optional uint32 SubType = 4; // 小类别
+  optional uint32 ItemNum = 5;// 总数
+  optional uint32 EndTime = 6; //到期时间戳，0表示道具是永久的
+  optional CueInfo CueInfo = 7; //球杆属性
+  optional uint32 ItemStatus = 8; // 使用状态，0为未使用，1为使用中
+}
+
+//球杆升阶升星
+message CueUpgradeQualityStarRequest
+{
+  uint32 EntityID = 1; //用户id
+  uint32 ItemID = 2; //道具Id
+}
+
+//球杆升阶升星返回
+message CueUpgradeQualityStarResponse
+{
+  uint32 Code = 1; //用户id 0成功，1失败，2材料不足，3超过星数或者阶数
+  uint32 NextTableID = 2; //新的球杆id
+  uint32 ItemID = 3;
+}
+
+//使用道具
+message UseItemRequest
+{
+  uint32 EntityID = 1; //用户id
+  uint32 ItemID = 2; //背包Id
+  uint32 ToEntityID =3;//接收者
+  uint32 Number = 4;//道具数量
+}
+
+//使用道具
+// 其它类ItemType，code，1统一使用失败
+// 道具类ItemType:4，code，1使用失败，2数量不足
+// 服装类ItemType:2，code，1性别不符合
+message UseItemResponse
+{
+  uint32 Code = 1; //0成功，1使用失败
+  uint32 ItemType =2;//道具类型
+}
+
+//更新背包物品
+message BackpackUpdateItemSync
+{
+  uint32 EntityID = 1;
+  repeated ItemInfo Items = 2;//物品列表
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~道具信息结束~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+//*****************************邮件相关*****************************
+
+//邮件数据结构
+message Email
+{
+  uint32 EmailID = 1; // ID
+  string Date = 2; // 日期
+  bool State = 3; // 邮件状态-是否已读
+  bool StateReward = 4; //奖励状态-是否领取
+  repeated RewardInfo RewardList = 5; // 物品列表
+  string Tittle = 6; // 标题
+  string Content = 7; // 内容
+  bool IsRewardEmail = 8; // 是否是带奖励的邮件
+}
+
+//新邮件同步
+message NewEmailSync
+{
+  uint32 EntityID = 1;    //EntityID
+  uint32 Code = 2;   //错误代码
+  Email Email = 3; //邮件数据
+}
+
+////添加邮件返回
+//message EmailAddRequest
+//{
+//  uint32 EntityID = 1;    //EntityID
+//  Email Email = 2; //邮件数据
+//}
+//
+////添加邮件返回
+//message EmailAddResponse
+//{
+//  uint32 EntityID = 1;    //EntityID
+//  uint32 Code = 2;   //错误代码
+//  Email Email = 3; //邮件数据
+//}
+
+//删除邮件请求
+message EmailDelRequest
+{
+  uint32 EntityID = 1;    //EntityID
+  uint32 EmailID = 2; // 邮件ID
+}
+//删除邮件返回
+message EmailDelResponse
+{
+  uint32 EntityID = 1;    //EntityID
+  uint32 Code = 2;   //错误代码
+  Email Email = 3; //邮件数据
+}
+
+////更新邮件信息请求
+//message EmailUpdateRequest
+//{
+//  uint32 EntityID = 1;    //EntityID
+//  uint32 EmailID = 2; // 邮件ID
+//  Email Email = 3; //邮件数据
+//}
+//
+////更新邮件信息返回
+//message EmailUpdateResponse
+//{
+//  uint32 EntityID = 1;    //EntityID
+//  uint32 Code = 2;   //错误代码
+//  Email Email = 3; //邮件数据
+//}
+
+//读取邮件数据请求
+message EmailReadRequest
+{
+  uint32 EntityID = 1;    //EntityID
+  uint32 EmailID = 2; // 邮件ID
+}
+
+//读取邮件数据返回
+message EmailReadResponse
+{
+  uint32 Code = 1;   //错误代码
+  uint32 EmailID = 2; // 邮件ID
+  bool State = 3;   //已读状态
+}
+
+//领取邮件奖励请求
+message EmailGetRewardRequest
+{
+  uint32 EntityID = 1;    //EntityID
+  uint32 EmailID = 2; // 邮件ID
+}
+
+//领取邮件奖励返回
+message EmailGetRewardResponse
+{
+  uint32 Code = 1;   //错误代码 1:没有对应的邮件，2:没有奖励
+  uint32 EmailID = 2; // 邮件ID
+  bool StateReward = 3;   //领取状态
+  repeated RewardInfo RewardList = 4; //邮件奖励列表
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~邮件结束~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+//*****************************社交相关*****************************
+
+
+message PopRanks
+{
+  uint32 EntityID = 1;
+  uint64 PopularityValue = 2;
+}
+
+// 人气之星榜
+message PopularityRankRequest
+{
+  uint32 EntityID = 1;
+
+}
+
+message PopularityRankResponse
+{
+  uint32 Code = 1;
+  repeated PopRanks WeekList = 2;
+  repeated PopRanks TotalList = 3;
+}
+
+// 我的关注列表
+message MyFriendsListRequest
+{
+  uint32 EntityID = 1;
+}
+
+// 我的关注列表响应
+message MyFriendsListResponse
+{
+  uint32 EntityID = 1;
+  repeated FriendList List = 2;
+}
+
+message FriendList
+{
+  uint32 EntityID = 1;
+  uint64 AddTime = 2; //关注时间戳
+  uint32 Online = 3;//0是在线，大于0就是不在线，时间单位分钟
+  bool IsGiveGold = 4;
+  optional bool IsFriend = 5; //是否互相关注
+  uint32 PlayerLv = 6; //角色等级
+  string PlayerName = 7; //角色名称
+  uint32 PlayerIcon = 8; //角色头像
+  uint32 IconFrame = 9;//头像相框
+  uint32 VipLv = 10; //Vip等级
+  uint32 Sex = 11; //性别
+  uint32 PeakRankLv = 12;//角色段位
+}
+
+// 我的粉丝列表
+message FansListRequest
+{
+  uint32 EntityID = 1;
+}
+
+// 我的粉丝列表
+message FansListResponse
+{
+  repeated FansList List = 1;
+}
+
+message FansList
+{
+  uint32 EntityID = 1;
+  optional bool IsFriend = 2; //是否互相关注
+  string PlayerName = 3; //角色名称
+  uint32 PlayerIcon = 4; //角色头像
+  uint32 IconFrame = 5;//头像相框
+  uint32 VipLv = 6; //Vip等级
+  uint32 Sex = 7; //性别
+  uint32 PeakRankLv = 8;//角色段位
+}
+
+// 添加关注
+message AddMyFriendsRequest
+{
+  uint32 EntityID = 1;
+  uint32 AddEntityID = 2;
+}
+
+// 添加关注
+message AddMyFriendsResponse
+{
+  uint32 EntityID = 1;
+  uint32 Code = 2;
+  uint32 MyFriendsNum = 3;
+  uint32 AddEntityID = 4;//关注人id
+  repeated FriendList AddList = 5;//添加列表
+}
+
+//取消关注
+message CancelMyFriendsRequest
+{
+  uint32 EntityID = 1;
+  uint32 DelEntityID = 2;
+}
+
+//取消关注
+message CancelMyFriendsResponse
+{
+  uint32 EntityID = 1;
+  uint32 Code = 2;
+  uint32 MyFriendsNum = 3;
+  repeated FriendList CancelList = 4;
+  uint32 DelEntityID = 5;
+}
+
+// 附近玩家列表
+message NearByPlayerListRequest
+{
+  uint32 EntityID = 1;
+}
+
+// 附近玩家列表
+message NearByPlayerListResponse
+{
+  repeated NearPlayerList List = 1;
+  uint32 EntityID = 2;
+}
+
+message NearPlayerList
+{
+  uint32 EntityID = 1;
+  uint32 PlayerType = 2;//0是在线，1为游戏中，2离线
+  string PlayerName = 3; //角色名称
+  uint32 PlayerIcon = 4; //角色头像
+  uint32 IconFrame = 5;//头像相框
+  uint32 VipLv = 6; //Vip等级
+  uint32 Sex = 7; //性别
+}
+
+// 搜索玩家请求
+message SearchPlayerFromIDRequest
+{
+  uint32 EntityID = 1;
+  string QueryEntityID = 2;
+}
+
+// 搜索玩家响应
+message SearchPlayerFromIDResponse
+{
+  uint32 Code = 1;//0用户存在，不在关注列表，1用户id有误，2在关注列表
+  uint32 EntityID = 2;
+  uint32 ResultEntityID = 3;//返回的用户id
+  uint32 PlayerLv = 4; // 角色等级
+  string PlayerName = 5; //角色名称
+  uint32 PlayerIcon = 6; //角色头像
+  uint32 IconFrame = 7;//头像相框
+  uint32 VipLv = 8; //Vip等级
+  uint32 Sex = 9; //性别
+  uint32 PeakRankLv = 10;//角色段位
+}
+
+// 赠送金币
+message AddGoldToMyFriendsRequest
+{
+  uint32 EntityID = 1;
+  uint32 AddEntityID = 2;
+}
+
+// 赠送金币
+message AddGoldToMyFriendsResponse
+{
+  uint32 EntityID = 1;
+  uint32 Code = 2; // 0成功，1超过每天总赠送次数，2没有相互关注， 3今天已经赠送
+  FriendList Friend = 3;
+}
+
+// 添加粉丝推送
+message AddFansSync
+{
+  uint32 EntityID = 1; //接收EntityID
+  FansList Fans =2;//粉丝结构
+}
+
+// 减少粉丝推送
+message ReduceFansSync
+{
+  uint32 EntityID = 1; //接收EntityID
+  FansList Fans =2;//粉丝结构
+}
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~社交结束~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+//---------------------------------图鉴模块---------------------------------
+
+message ElemBook
+{
+  uint32 Key = 1;
+  uint32 State = 2;//0未完成，1完成,2已激活（点亮）
+}
+
+//图鉴列表同步(MainPlayerSync)
+message CueHandBookSync
+{
+  uint32 EntityID = 1;//
+  ElemBook ElemBook = 2;//
+}
+
+//激活图鉴请求
+message CueHandBookActivateRequest
+{
+  uint32 EntityID = 1;
+  uint32 CueID = 2;//球杆ID
+}
+
+message CueHandBookActivateResponse
+{
+  uint32 EntityID = 1;//
+  uint32 Code = 2;//0激活成功，1激活失败
+  ElemBook ElemBook = 3;//
+}
+
+//----------------------------图鉴模块---------------------------------
+
+
+//-----------------------------首充--------------------------------
+
+message FirstRechargeRequest
+{
+  uint32 EntityID =1;
+  uint32 TableID = 2;//配置表的key
+}
+
+message FirstRechargeResponse
+{
+  uint32 Code =1;//0成功，1失败
+}
+
+//-----------------------------首充--------------------------------

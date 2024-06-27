@@ -1,0 +1,47 @@
+package consts
+
+const (
+	BEHAVIOR_STATUS_NONE   = 0
+	BEHAVIOR_STATUS_HALL   = 1
+	BEHAVIOR_STATUS_MATCH  = 2
+	BEHAVIOR_STATUS_ROOM   = 3
+	BEHAVIOR_STATUS_BATTLE = 4
+
+	BATTLE_STATUS_IDLE        = 0
+	BATTLE_STATUS_BATTLE_ING  = 1
+	BATTLE_STATUS_SETTLE_ING  = 2
+	BATTLE_STATUS_SETTLE_OVER = 3
+	BATTLE_STATUS_END         = 4
+
+	RESULT_VICTORY   = 0 //胜利
+	RESULT_TRANSPORT = 1 //失败
+
+	BALLS_WHITE           = 99 //白球Id
+	BALLS_BLACK           = 8  //黑球Id
+	BALLS_SPLITTING_SMALL = 1  //台球分边1-7
+	BALLS_SPLITTING_BIG   = 2  //台球分边9-15
+
+	SETTLEMENT_TYPE_NORMAL    = 1 //正常结算
+	SETTLEMENT_TYPE_SURRENDER = 2 //投降结算(输家不会推送消息)
+	SETTLEMENT_TYPE_VIOLATION = 3 //违规结算
+	SETTLEMENT_TYPE_OFFLINE   = 4 //断网结算
+
+	OPERATE_TYPE_INCR = 1 //增加
+	OPERATE_TYPE_DECR = 2 //减少
+
+	MIN_USER_LV      = 1 //用户最小等级
+	MIN_PEAK_RANK_LV = 1 //排位最小等级
+	MIN_VIP_LV       = 0 //VIP最小等级
+
+	JUDG_TRANSPORT_NUM = 3 //违规判负次数
+
+	PEAK_RANK_SETTLEMENT_STAR_NUM = 1 //巅峰赛每局结算经验数量
+
+	/**********************房间定时器*******************************/
+
+	BATTLE_PLAY_BALL_COUNTDOWN      = 30
+	BATTLE_PLAY_BALL_COUNTDOWN_NAME = "PlayBallCountdown"
+
+	BATTLE_ROUND_END_COUNTDOWN      = 10
+	BATTLE_ROUND_END_COUNTDOWN_NAME = "RoundEndCountdown"
+)

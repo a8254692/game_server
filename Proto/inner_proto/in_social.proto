@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./;msg";
+
+// 社交内部协议
+
+// 添加粉丝
+message AddMyFansRequest
+{
+  uint32 EntityID =1;
+  uint32 AddEntityID =2;
+}
+
+// 减少粉丝
+message DelMyFansRequest
+{
+  uint32 EntityID =1;
+  uint32 DelEntityID =2;
+}
+
+// 赠送金币
+message AddGoldToMyFriendsToDB
+{
+  uint32 AddEntityID =1;
+  uint32 GoldAmount =2;
+}
+
+
+//消息
+message InPrivateChatEntity
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+  string EntityName = 2;  //名字
+  uint32 EntitySex = 3;  //性别
+  uint32 EntityIcon = 4;  //头像
+  uint32 EntityIconFrame = 5;  //头像框
+  uint32 EntityVipLv = 6;  //vip等级
+}
+
+//跑马灯消息
+message InMarqueeMsgSync
+{
+  uint32 MarqueeType = 1;  //跑马灯类型
+  string Context = 2;  //消息体
+}

@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./;msg";
+import "in_reward.proto";
+
+//邮件数据结构
+message InEmail
+{
+  uint32 EmailID = 1; // ID
+  string Date = 2; // 日期
+  bool State = 3; // 邮件状态-是否已读
+  bool StateReward = 4; //奖励状态-是否领取
+  repeated InRewardInfo RewardList = 5; // 物品列表
+  string Tittle = 6; // 标题
+  string Content = 7; // 内容
+}
+
+//更新邮件信息请求
+message InEmailUpdateRequest
+{
+  uint32 EntityID = 1;    //EntityID
+  uint32 EmailID = 2; // 邮件ID
+  InEmail Email = 3; //邮件数据
+}
+
+//新增邮件信息请求
+message InAddEmailRequest
+{
+  uint32 EntityID = 1;    //EntityID
+  InEmail Email = 3; //邮件数据
+}

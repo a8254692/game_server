@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./;msg";
+
+// 用户踢下线消息
+message PlayerKickOutRequest
+{
+  uint32 EntityID =1;
+}
+
+// 用户禁言消息
+message PlayerProhibitionRequest
+{
+  uint32 EntityID =1;
+}

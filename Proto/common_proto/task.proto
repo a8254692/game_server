@@ -1,0 +1,222 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./;msg";
+
+
+// 任务属性
+message TaskInfo
+{
+  uint32 TaskId =1;
+  uint32 State =2;//任务状态 0未完成，1完成
+  uint32 StateReward =3;//任务奖励领取，0未领取，1已领取
+  uint32 CompleteProgress =4;//已完成进度
+  uint32 TaskProgress =5;//任务需要的进度
+}
+
+message Progress
+{
+  uint32 ProgressID =1;// 进度表id
+  uint32 StateReward =2; // 领取状态，0未领取，1领取
+}
+
+message CollectInfo
+{
+  uint32 CollectID =1;
+  uint32 State =2;   //0未完成，1可激活，2已激活
+  uint32 CompleteProgress =3; //完成的进度
+  uint32 TaskProgress =4; //任务配置的进度
+  uint32 Apply =5; // 0未使用，1使用中（必须激活才可使用）
+}
+
+// 活跃进度表领取奖励
+message TaskProgressClaimRewardRequest
+{
+   uint32 EntityID =1;
+   uint32 TaskProgressKey =2;// 领取奖励key
+}
+
+// 活跃进度表领取奖励
+message TaskProgressClaimRewardResponse
+{
+  uint32 EntityID =1;
+  uint32 Code =2; // 0分数达到并成功，1分数未达到，2分数达到，但领取异常(可能是跨天领取),3重复领取
+  uint32 TaskProgressKey =3;// 领取奖励key
+}
+
+// 任务表领取奖励
+message TaskListClaimRewardRequest
+{
+  uint32 EntityID =1;
+  uint32 TaskID =2;//领取的任务id
+}
+
+// 任务表领取奖励
+message TaskListClaimRewardResponse
+{
+  uint32 EntityID =1;
+  uint32 Code =2;// 0领取成功，1失败
+  TaskInfo Task =3;
+  uint32 DayProgress =4;//今日进度活跃值
+  uint32 WeekProgress =5;//周进度活跃值
+}
+// 使用称号
+message CollectApplyRequest
+{
+   uint32 EntityID =1;
+   uint32 CollectID =2;//称号id
+}
+
+// 使用称号
+message CollectApplyResponse
+{
+  uint32 EntityID =1;
+  uint32 Code =2;// 0成功，1失败
+  CollectInfo Collect =3;
+}
+
+message AchievementLvCanClaimReward
+{
+  uint32 AchievementLvID =1;//可领取的当前等级id，按顺序领取
+  bool IsCanClaim =2;//是否可领取，服务器会根据等级判断
+}
+
+// 成就等级领取奖励
+message AchievementLvClaimRewardRequest
+{
+  uint32 EntityID =1;
+  uint32 AchievementLvID =2;//领取等级
+}
+
+// 成就等级领取奖励
+message AchievementLvClaimRewardResponse
+{
+  uint32 EntityID =1;
+  uint32 Code =2;
+  uint32 NextAchievementLvID =3;//返回下一个等级id，按顺序领取
+  bool IsCanClaim =4;//是否可领取，服务器会根据等级判断
+}
+
+// 查看已领取的成就等级奖励列表
+message AchievementLvClaimRewardListRequest
+{
+  uint32 EntityID =1;
+}
+
+// 查看已领取的成就等级奖励列表
+message AchievementLvClaimRewardListResponse
+{
+  repeated AchievementLvReward RewardList =1;
+}
+
+message AchievementLvReward
+{
+  uint32 AchievementLvID =1;
+  uint32 StateReward =2;
+}
+
+// 子成就元素
+message ChildAchievement
+{
+  uint32 ChildID    =1;     // 子成就元素id
+  uint32 ConditionID =2;    // 条件id
+  uint32 State =3;       //0未完成，1完成
+  uint32 CompleteProgress =4; //完成的进度
+  uint32 TaskProgress =5;     //任务配置的进度
+  string AddTime =6;         //完成时间， 格式：2023.10.16
+}
+
+// 成就元素
+message Achievement
+{
+  uint32 AchievementID =1;
+  uint32 TypeN  =2;
+  repeated ChildAchievement ChildList =3;
+}
+
+// 获取子成就列表
+message AchievementChildListRequest
+{
+  uint32 EntityID =1;
+  uint32 AchievementID =2;//成就id
+}
+
+// 获取子成就列表
+message AchievementChildListResponse
+{
+  uint32 EntityID =1;
+  repeated ChildAchievement AchievementChildList =2;
+}
+
+// 获取成就列表
+message AchievementListRequest
+{
+  uint32 EntityID =1;
+}
+
+// 获取成就列表
+message AchievementListResponse
+{
+  uint32 EntityID =1;
+  repeated Achievement AchievementList =2;
+}
+
+// 任务同步(MainPlayerSync)
+message TaskListSync
+{
+  uint32 EntityID =1;
+  TaskInfo TaskInfo =2;// 任务数据
+}
+
+//称号同步(MainPlayerSync)
+message CollectInfoSync
+{
+  uint32 EntityID =1;//
+  CollectInfo CollectInfo =2;
+}
+
+//成就等级同步(MainPlayerSync)
+message AchievementLvSync
+{
+  uint32 EntityID =1;
+  uint32 AchievementLvID=2;
+  bool IsCanClaim =3;//是否可领取，服务器会根据等级判断
+}
+
+//每天任务重置推送
+message TaskListResetSync
+{
+  uint32 EntityID =1;
+  uint32 DayProgress =2;//今日进度活跃值
+  uint32 WeekProgress =3;//周进度活跃值
+  repeated Progress DayProgressList =4; //日活跃进度领取表
+  repeated Progress WeekProgressList =5;//周活跃进度领取表
+  repeated TaskInfo TaskList =6;//任务列表
+}
+
+//激活称号
+message ActivateCollectRequest
+{
+  uint32 EntityID =1;
+  uint32 CollectID =2;//称号id
+}
+
+//激活称号
+message ActivateCollectResponse
+{
+  uint32 EntityID =1;
+  uint32 Code =2;// 0成功，1失败
+  CollectInfo Collect =3;
+}
+
+//获取完成的游戏成就
+message GameAchievementListRequest
+{
+  uint32 EntityID =1;
+}
+
+//获得成就返回
+message GameAchievementListResponse
+{
+  repeated Achievement AchievementList =2;
+}

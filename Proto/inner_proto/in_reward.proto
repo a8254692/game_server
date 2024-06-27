@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./;msg";
+
+message InRewardInfo
+{
+  uint32 ItemTableId = 1; //物品配置表ID
+  uint32 Num = 2; //物品数量
+  uint32 ExpireTimeId = 3;//道具时限表id
+}

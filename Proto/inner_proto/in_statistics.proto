@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./;msg";
+
+message InUserDataStatisticsData
+{
+  uint32 EntityId = 1; //累计获取的金币
+  uint32 AccumulateGold = 2; //累计获取的金币
+  uint32 AccumulateGoal = 3; //累计进球
+  uint32 OneCueClear = 4; //一杆清台
+  uint32 IncrBindNum = 5; //加注次数
+  uint32 C8PlayNum = 6; //对局次数
+  uint32 C8WinNum = 7; //胜利次数
+  uint32 C8EscapeNum = 8; //逃跑次数
+  uint32 C8ContinuousWin = 9; //连胜次数(输了清零)
+  uint32 C8MaxContinuousWin = 10; //最大连胜次数
+  uint32 C8DoubleGoalNum = 11; //二连杆次数
+  uint32 C8ThreeGoalNum = 12; //三连杆次数
+}

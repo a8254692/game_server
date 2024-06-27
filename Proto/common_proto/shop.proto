@@ -1,0 +1,99 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./;msg";
+import "reward.proto";
+
+
+message PointsShopInfo
+{
+  string  PointsMallId = 1;    //积分商城唯一ID
+  int64    StartTime = 2;    //开始时间
+  int64    EndTime = 3;    //结束时间
+  repeated  RewardInfo RewardList = 4;    //物品id
+  string Resources = 5;
+  uint32  LimitNum = 6;    //兑换总数限制
+  uint32  ExchangeAmount = 7; //兑换金额
+  uint32  ExchangeCurrencyType = 8; //兑换代币类型
+  uint32  ExchangeMaxNum = 9; //每人最大兑换数量
+  string Name = 10; //名称
+  uint32  TotalRedeemedNum = 11; //已兑换总数量
+  uint32  UserRedeemedNum = 12; //已兑换个人数量
+}
+
+//获取商城列表
+message GetShopListRequest
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+}
+
+message ShopInfo
+{
+  uint32 ID=1; //商城道具ID
+  int64 ShowStartTime=3; //开始展示时间
+  int64 ShowEndTime=4; //结束展示时间
+  uint32 Discount=5; //折扣
+}
+
+//获取商城列表返回
+message GetShopListResponse
+{
+  uint32 Code = 1;  //状态码
+  repeated ShopInfo List = 2;  //商品列表
+}
+
+//购买商品
+message ShopBuyItemRequest
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+  uint32 ShopItemID = 2; //商城道具ID
+  uint32 ExpireTimeId = 3; //道具时限表id
+  uint32 Num =4;//商品数量
+}
+
+//购买商品返回
+message ShopBuyItemResponse
+{
+  uint32 Code = 1;  //状态码 1:已经有了该商品（对于不能叠加的物品）；2：货币不足；3：没有该商品道具；4：商品已过展示期
+  uint32 ShopItemID=2;
+  RewardInfo RewardInfo=3;
+}
+
+//赠送商品
+message ShopGiveItemRequest
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+  uint32 GiveEntityID = 2;  //被赠予人EntityID
+  uint32 ItemID=3;
+}
+
+//赠送商品返回
+message ShopGiveItemResponse
+{
+  uint32 Code = 1;  //状态码
+  uint32 ItemID=2;
+}
+
+
+//积分商城购买商品
+message PointsShopBuyItemRequest
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+  string PointsMallId = 2; //积分商城ID
+  uint32 Num = 3;  //购买数量
+}
+
+//积分商城购买商品返回
+message PointsShopBuyItemResponse
+{
+  uint32 Code = 1;  //状态码 1:已经有了该商品（对于不能叠加的物品）；2：货币不足；3：没有该商品道具；4：商品已过展示期；5：购买限制
+  string PointsMallId=2;
+  uint32  UserRedeemedNum = 3; //已兑换个人数量
+}
+
+//积分商城购买商品广播
+message PointsShopBuyItemBroadCast
+{
+  string PointsMallId=1;
+  uint32  TotalRedeemedNum = 2; //已兑换总数量
+}

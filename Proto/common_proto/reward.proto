@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./;msg";
+
+enum ReceiveStatus {
+  Receive_Status_No = 0; //未领取
+  Receive_Status_Yes = 1; //已领取
+  Receive_Status_Locked = 2; //锁定中
+  Receive_Status_Miss = 3; //已错过
+}
+
+enum SystemActivityId {
+  Sys_Activity_None = 0; //占位符
+  Sys_Activity_PeakRank = 1; //赛季
+  Sys_Activity_RookieSign = 2; //新手签到
+  Sys_Activity_VipDailySign = 3; //vip每日签到
+}
+
+//通用同步奖励列表消息
+message CommonSendRewardSync
+{
+  repeated RewardInfo RewardList = 3; // 物品列表
+}
+
+message RewardInfo
+{
+  uint32 ItemTableId = 1; //物品配置表ID
+  uint32 Num = 2; //物品数量
+  uint32 ExpireTimeId = 3;//道具时限表id
+}
+
+/********************************GM消息************************************/
+
+//GM消息请求
+message GetGmMsgRequest
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+  uint32 GType = 2;  //消息类型 1:加经验 2:加金币 3:加钻石 4:加物品
+  uint32 Param = 3;  //消息参数 id/num
+}
+
+//GM消息返回
+message GetGmMsgResponse
+{
+  uint32 Code = 1;  //状态码
+}
+
+/********************************GM消息************************************/

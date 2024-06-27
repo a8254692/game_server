@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./;msg";
+
+//商店列表
+message SpecialShopListRequest
+{
+  uint32 EntityID =1;
+}
+
+message SpecialShopListResponse
+{
+  repeated SpecialShopInfo ShopList =1;
+}
+
+message SpecialShopInfo
+{
+  uint32 Key =1;//
+  uint32 PayType =2;//支付方式
+  uint32 TableId =3;//
+  uint32 Num =4;//数量
+  uint32 GiftNum =5;//赠品数量
+  uint32 Price =6;
+}
+
+//购买特殊商品
+message BuySpecialShopRequest
+{
+  uint32 EntityID =1;
+  uint32 Key =2;//
+}
+
+message BuySpecialShopResponse
+{
+  uint32 Code =1;//0购买成功，1购买失败，2货币不足
+}

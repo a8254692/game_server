@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./;msg";
+import "in_reward.proto";
+
+message ShopCreateOrderRequest {
+  string CollectionName = 1;
+  string OrderSn = 2;
+  int32 EntityId = 3;
+  int32 FinalPrice = 4;
+  int32 CouponPrice = 5;
+  int32 OriginalPrice = 6;
+  string ItemId = 7;
+  string ItemName = 8;
+  int32 ItemNum = 9;
+  int32 PayType = 10;
+  int32 SourceType = 11;
+  int32 AddVipExp = 12;
+  string Note = 13;
+  string PaymentTime = 15;
+  string TimeCreate = 16;
+  string TimeUpdate = 17;
+  string TimeDelete = 18;
+  int32 DeleteStatus = 19;
+}
+
+message ShopCreateOrderResponse
+{
+  uint32 Code = 1;  //状态码
+  string OrderSn = 2;
+}
+
+
+message InPointsShopInfo
+{
+  string  PointsMallId = 1;    //积分商城唯一ID
+  int64    StartTime = 2;    //开始时间
+  int64    EndTime = 3;    //结束时间
+  repeated  InRewardInfo RewardList = 4;    //物品id
+  string Resources = 5;
+  uint32  LimitNum = 6;    //兑换总数限制
+  uint32  ExchangeAmount = 7; //兑换金额
+  uint32  ExchangeCurrencyType = 8; //兑换代币类型
+  uint32  ExchangeMaxNum = 9; //每人最大兑换数量
+  uint32  RedeemedNum = 10; //已兑换数量
+  string Name = 11;//名称
+}
+
+message InPointsShopList
+{
+  repeated InPointsShopInfo List = 1;  //积分商城列表
+}
+
+message InPointsShopToDbRequest
+{
+}
+
+message InAdminPointsShopListSync
+{
+  string PointsMallId = 1;
+}
+
+message InPointsShopRedeemedNumToDbSync
+{
+  string PointsMallId = 1;
+  uint32  RedeemedNum = 10; //已兑换数量
+}

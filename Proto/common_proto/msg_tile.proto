@@ -1,0 +1,428 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./;msg";
+
+enum MsgTile {
+  NONE = 0; //占位符
+  Sys_Test = 100000;
+  Sys_HeartBeatRequest = 100010; //心跳包请求
+  Sys_HeartBeatResponse = 100011; //心跳包响应
+  Sys_GmMsgRequest = 100012; //GM消息请求
+  Sys_EntityOfflineToGameRequest = 100013; //链接断开消息
+
+  Sys_SyncEntity = 100100; //心跳包响应
+
+  //---------------登录模块---------------------------------------------------
+  Login_ReportPhoneInfoRequest = 100101; //上报机器数据请求
+  Login_ReportPhoneInfoResponse = 100102; //上报机器数据响应
+  Login_MainAccSync = 100103; //帐号数据同步
+  Login_MainPlayerSync = 100104; //角色数据同步
+  Login_EnterGameRequest = 100105; //进入游戏请求
+  Login_EnterGameResponse = 100106; //进入游戏响应
+  Login_PlayerCreateRequest = 100107; //创建角色请求
+  Login_PlayerCreateResponse = 100108; //创建角色响应
+  Login_PlayerListRequest = 100109; //角色列表请求
+  Login_PlayerListResponse = 100110; //角色列表响应
+  Login_PlayerChangeSexRequest = 100111; //角色性别修改
+  Login_PlayerChangeSexResponse = 100112; //角色性别响应
+  Login_PlayerClubSync = 100113; //俱乐部数据同步
+  Login_PlayerLvExpSync = 100114; //用户等级经验同步
+  //Login_PlayerCoinSync = 100115; //用户金币同步
+  Login_PlayerIconSync = 100116; //用户头像同步
+  Login_ClubToPlayerSync = 100117; //用户俱乐部id同步
+  Login_FansNumPlayerSync = 100118; //用户粉丝数同步
+  Login_PlayerCollectIDSync = 100119;//称号同步
+  Login_PlayerAchievementLvAndScoreSync = 100120;//推送成就等级和积分
+  Login_PlayerSignInListSync = 100121;//签到列表同步
+  //Login_ClubGoldToPlayerSync = 100122;//俱乐部币同步
+  //Login_ExchangeGoldSync = 100123;//兑换卷同步
+  Login_PlayerCueInfoSync = 100124;//角色球杆同步
+  Login_PlayerDressSync = 100125;//角色服装同步
+  Login_PlayerClothingSync = 100126;//装扮同步
+  Login_PlayerEffectSync = 100127;//特效同步
+  //Login_PlayerDiamondSync = 100128; //用户钻石同步
+  Login_PlayerVipLvExpSync = 100129; //用户vip等级和经验同步
+  Login_PlayerPeakRankLvExpSync = 100130; //用户天梯等级和经验同步
+  Login_PlayerProhibitionRequest = 100131; //用户禁言消息
+  Login_PlayerKickOutRequest = 100132; //用户踢下线消息
+  Login_PlayerPropertyItemSync = 100133;//(公用接口，同步属性道具)
+  Login_PlayerRepeatedPropertyItemSync = 100134;//(公用接口，同步多个属性道具)
+
+  //---------------------道具商城相关--------------
+  Shop_GetShopListRequest = 100201; //请求商城列表
+  Shop_GetShopListResponse = 100202; //商城返回
+  Shop_BuyItemRequest = 100203; //请求购买商品
+  Shop_BuyItemResponse = 100204; //购买商品返回
+  Shop_GiveItemRequest = 100205; //请求赠送商品
+  Shop_GiveItemResponse = 100206; //赠送商品返回
+  Shop_ConfigUpdateSync = 100207; //商品列表配置修改同步消息
+
+  Shop_PointsShopBuyItemRequest = 100208; //积分商城请求购买商品
+  Shop_PointsShopBuyItemResponse = 100209; //积分商城购买商品返回
+  Shop_PointsShopBuyItemBroadCast = 100210; //积分商城购买商品广播
+
+  //---------------------角色属性相关--------------
+  Player_ChangeIconRequest = 100301; //请求修改头像
+  Player_ChangeIconResponse = 100302; //修改头像返回
+  Player_ChangeNameRequest = 100303; //请求修改名字
+  Player_ChangeNameResponse = 100304; //修改名字返回
+  Player_ChangeServerRequest = 100305; //请求切换服务器
+  Player_ChangeServerResponse = 100306; //切换服务器返回
+  Player_RedTipsRequest = 100307; //请求红点数据
+  Player_RedTipsResponse = 100308; //返回红点数据
+  Player_ChangeSignRequest = 100309; // 请求修改签名
+  Player_ChangeSignResponse = 100310; // 修签名返回
+  //Player_CueListRequest = 100311; // 球杆馆
+  //Player_CueListResponse = 100312; // 球杆馆返回
+  Player_QueryEntityPlayerByIDRequest = 100313; //查询别人的个人信息
+  Player_QueryEntityPlayerByIDResponse = 100314; //查询别人的个人信息返回
+  Player_ChangOpenGiftRequest = 100315;// 修改赠送礼物开关
+  Player_ChangOPenGiftResponse = 100316;
+//  Player_BackpackGiftsListRequest = 100317;//我的礼物列表
+//  Player_BackpackGiftsListResponse = 100318;//我的礼物列表
+//  Player_ReceivingGiftsRequest = 100319;//接收的礼物
+//  Player_ReceivingGiftsResponse = 100320;
+//  Player_ReceivingGiftsListRequest = 100321;//统计守护榜
+//  Player_ReceivingGiftsListResponse = 100322;
+  Player_InfoRequest = 100323;//个人资料查询
+  Player_InfoResponse = 100324;//个人资料返回
+//  Player_AddMyFriendsRequest = 100325;//从个人信息添加关注请求(不用了)
+//  Player_AddMyFriendsResponse = 100326;//从个人信息添加关注返回
+  Player_GiveGiftRequest = 100327;//赠送礼物
+  Player_GiveGiftResponse = 100328;//赠送礼物
+  //Player_StatisticsRequest = 100329;//游戏生涯请求
+  //Player_StatisticsResponse =100330;//游戏生涯返回
+  Player_GameAchievementListRequest = 100331;//获取游戏成就
+  Player_GameAchievementListResponse = 100332;//获取游戏成就返回
+
+  //---------------匹配模块
+  //从100401开始100位
+  Hall_EightMatchRequest = 100401; //请求匹配
+  Hall_EightMatchResponse = 100402; //请求匹配返回
+  Hall_EightMatchSuccessRequest = 100403; //匹配成功
+  Hall_EightMatchSuccessResponse = 100404; //匹配成功返回
+  Hall_EightMatchCancelRequest = 100405; //撤消匹配
+  Hall_EightMatchTimeOutResponse = 100406; //匹配超时
+  Hall_EightReplayRequest = 100407;//重赛请求
+  Hall_EightReplayResponse = 100408;//重赛返回
+  Hall_EightReplayConfirmRequest = 100409;//重赛确认同步
+  Hall_EightReplayConfirmResponse = 100410;//重赛确认同步
+
+  //---------------房间模块模块
+  //从100501开始100位
+  Hall_CreateRoomRequest = 100501; //创建房间
+  Hall_CreateRoomResponse = 100502; //房间房间返回
+  Hall_JoinRoomRequest = 100503; //加入房间
+  Hall_JoinRoomResponse = 100504; //加入房间返回
+  Hall_ExitRoomRequest = 100505; // 退出房间
+  Hall_ExitRoomResponse = 100506; //退出房间成功
+  Hall_UseItemFromRoomIDRequest = 100507;//对战中使用道具
+  Hall_UseItemFromRoomIDResponse = 100508;//对战中使用道具
+  Hall_RoomListRequest =100509;//房间列表
+  Hall_RoomListResponse =100510;//房间列表返回
+
+  //---------------背包模块
+  //从100601开始100位
+//  Hall_BackpackRequest = 100601; //背包数据请求
+//  Hall_BackpackResponse = 100602; //背包数据返回
+  Hall_CueUpgradeQualityStarRequest = 100603; //球杆升阶升星
+  Hall_CueUpgradeQualityStarResponse = 100604; //球杆升阶升星
+  Hall_UseItemRequest = 100605; //使用道具
+  Hall_UseItemResponse = 100606; //使用道具
+  Hall_BackpackUpdateItemSync = 100607;//更新物品同步
+
+  //---------------排行榜模块
+  //从100701开始100位
+  Rankings_CueListRequest = 100701; //球杆榜列表请求
+  Rankings_CueListResponse = 100702; //球杆榜列表返回
+  Rankings_WealthListRequest = 100703; //财富榜列表请求
+  Rankings_WealthListResponse = 100704; //财富榜列表返回
+  Rankings_PeakRankListRequest = 100705; //段位榜列表请求
+  Rankings_PeakRankListResponse = 100706; //段位榜列表返回
+  Rankings_CelebrityListRequest = 100707; //名人榜列表请求
+  Rankings_CelebrityListResponse = 100708; //名人榜列表返回
+  Rankings_FriendCueListRequest = 100709; //好友球杆榜列表请求
+  Rankings_FriendCueListResponse = 100710; //好友球杆榜列表返回
+  Rankings_FriendWealthListRequest = 100711; //好友财富榜列表请求
+  Rankings_FriendWealthListResponse = 100712; //好友财富榜列表返回
+  Rankings_FriendPeakRankListRequest = 100713; //好友段位榜列表请求
+  Rankings_FriendPeakRankListResponse = 100714; //好友段位榜列表返回
+  Rankings_FriendCelebrityListRequest = 100715; //好友名人榜列表请求
+  Rankings_FriendCelebrityListResponse = 100716; //好友名人榜列表返回
+  Rankings_PopularityListRequest = 100717; //人气榜列表请求
+  Rankings_PopularityListResponse = 100718; //人气榜列表返回
+  Rankings_FriendPopularityListRequest = 100719; //好友人气榜列表请求
+  Rankings_FriendPopularityListResponse = 100720; //好友人气榜列表返回
+
+  //---------------奖励/活动模块
+  //从100801开始100位
+  Reward_CommonSendRewardSync = 100800; //通用同步奖励列表消息
+  Reward_ActivityListUpdateNoticeSync = 100801; //活动更新同步通知
+  Reward_GetActivityListRequest = 100802; //获取活动列表请求
+  Reward_GetActivityListResponse = 100803; //获取活动列表返回
+
+  Reward_UpdateBattleActivityProgressResponse = 100807; //更新对战活动的进度
+  Reward_UpdatePayActivityProgressResponse = 100808; //更新支付活动的进度
+  Reward_UpdateTurntableActivityProgressResponse = 100809; //更新转盘活动
+  Reward_ReceiveBattleActivityRequest = 100810; //领取对战活动奖励请求
+  Reward_ReceiveBattleActivityResponse = 100811; //领取对战活动奖励返回
+  Reward_ReceivePayActivityRequest = 100812; //领取支付活动奖励请求
+  Reward_ReceivePayActivityResponse = 100813; //领取支付活动奖励返回
+  Reward_ReceiveTurntableActivityRequest = 100814; //领取转盘活动奖励请求
+  Reward_ReceiveTurntableActivityResponse = 100815; //领取转盘活动奖励返回
+  Reward_ReceivePayLotteryActivityRequest = 100816; //领取抽奖活动奖励请求
+  Reward_ReceivePayLotteryActivityResponse = 100817; //领取抽奖活动奖励返回
+  Reward_ReceivePayLotteryDrawNumRequest = 100818; //领取抽奖次数活动奖励请求
+  Reward_ReceivePayLotteryDrawNumResponse = 100819; //领取抽奖次数活动奖励返回
+  Reward_ReceivePayLotteryExchangeRequest = 100820; //领取抽奖兑换活动奖励请求
+  Reward_ReceivePayLotteryExchangeResponse = 100821; //领取抽奖兑换活动奖励返回
+
+  Reward_UpdateKingRodeActivityProgressResponse = 100822;//王者之路进度更新
+  Reward_KingRodeAdvancedUnlockRequest = 100823;//解锁王者之路进阶版请求
+  Reward_KingRodeAdvancedUnlockResponse = 100824;//解锁王者之路进阶版返回
+  Reward_ReceiveKingRodeActivityRewardRequest = 100825;//领取王者之路进度奖励请求
+  Reward_ReceiveKingRodeActivityRewardResponse = 100826;//领取王者之路进度奖励返回
+
+  Login_RewardListRequest = 100827;//定时登录活动奖励列表
+  Login_RewardListResponse = 100828;//定时登录活动奖励列表
+  Login_RewardClaimRequest = 100829;//定时登录奖励领取奖励请求
+  Login_RewardClaimResponse = 100830;//定时登录奖励领取返回
+
+  //---------------俱乐部模块
+  //从100901开始100位
+  Hall_ClubListRequest = 100901;//俱乐部列表请求
+  Hall_ClubListResponse = 100902;//俱乐部请求响应
+  Hall_ClubCreateRequest = 100903;//创建俱乐部请求
+  Hall_ClubCreateResponse = 100904;//创建俱乐部响应
+  Hall_ClubRatifyJoinRequest = 100905;//审核加入俱乐部请求
+  Hall_ClubRatifyJoinResponse = 100906;
+  Hall_ClubExitRequest = 100907;//退出俱乐部
+  Hall_ClubExitResponse = 100908;
+  Hall_ClubTop10Request = 100909;//top10俱乐部
+  Hall_ClubTop10Response = 100910;
+  Hall_ClubHomePageRequest = 100911;//查询俱乐部主页
+  Hall_ClubHomePageResponse = 100912;
+  Hall_ClubInfoRequest = 100913;//查询俱乐部信息
+  Hall_ClubInfoResponse = 100914;
+  Hall_ClubRatifyListRequest = 100915;//俱乐部申请列表
+  Hall_ClubRatifyListResponse = 100916;//俱乐部申请响应
+  Hall_ClubGoldListRequest = 100917;//俱乐部金币排行请求
+  Hall_ClubGoldListResponse = 100918;//俱乐部金币排行响应
+  Hall_CommissionSecondMasterRequest = 100919;//任命副部长请求二合一
+  Hall_CommissionSecondMasterResponse = 100920;//任命副部长返回
+  Hall_TransferMasterRequest = 100921;//转让部长请求
+  Hall_TransferMasterResponse = 100922;//转让部长返回
+  Hall_UpdateClubRequest = 100923;//修改俱乐部
+  Hall_UpdateClubResponse = 100924;//修改俱乐部
+  Hall_ClubCancelJoinRequest = 100925;//取消申请俱乐部请求
+  Hall_ClubCancelJoinResponse = 100926;//取消申请俱乐部返回
+  Hall_ClubReqJoinRequest = 100927;//申请加入俱乐部请求
+  Hall_ClubReqJoinResponse = 100928;//申请加入俱乐部返回
+  Hall_ClubDelMembersRequest = 100929;//剔除成员
+  Hall_ClubDelMembersResponse = 100930;
+
+  Hall_ClubShopListRequest = 100931;//俱乐部商店列表请求
+  Hall_ClubShopListResponse = 100932;//俱乐部商店列表返回
+  Hall_ClubShopBuyRequest = 100933;//俱乐部商店购买请求
+  Hall_ClubShopBuyResponse = 100934;//俱乐部商店购买返回
+
+  Hall_ClubSendRedEnvelopeRequest = 100941;//俱乐部发送红包请求
+  Hall_ClubSendRedEnvelopeResponse = 100942;//俱乐部发送红包返回
+  Hall_ClubRedEnvelopeListRequest = 100943;//俱乐部红包列表请求
+  Hall_ClubRedEnvelopeListResponse = 100944;//俱乐部红包列表返回
+  Hall_ClubRedEnvelopeRecordListRequest = 100945;//俱乐部红包记录列表请求
+  Hall_ClubRedEnvelopeRecordListResponse = 100946;//俱乐部红包记录列表返回
+  Hall_ClubRedEnvelopeOpenRequest = 100947;//俱乐部红包打开请求
+  Hall_ClubRedEnvelopeOpenResponse = 100948;//俱乐部红包打开返回
+
+  Hall_ClubFundListRequest = 100951;//俱乐部基金列表请求
+  Hall_ClubFundListResponse = 100952;//俱乐部基金列表返回
+
+  Hall_ClubClaimTaskProgressRequest = 100953;//俱乐部活跃值领取奖励
+  Hall_ClubClaimTaskProgressResponse = 100954;//俱乐部活跃值领取奖励
+  Hall_ClubDailySignInRequest = 100955;// 俱乐部打卡请求
+  Hall_ClubDailySignInResponse = 100956;// 俱乐部打卡返回
+  Hall_ClubTaskListRequest = 100957;// 俱乐部任务表
+  Hall_ClubTaskListResponse = 100958;//俱乐部任务表返回
+  Hall_ClubSupportRequest = 100959;//俱乐部赞助资金
+  Hall_ClubSupportResponse = 100960;//俱乐部赞助资金返回
+  Hall_ClaimMyClubTaskProgressRequest = 100961;//领取我的活跃值奖励请求
+  Hall_ClaimMyClubTaskProgressResponse = 100962;//领取我的活跃值奖励返回
+  Hall_ClubRateListRequest = 100963;//俱乐部评级请求
+  Hall_ClubRateListResponse = 100964;//俱乐部评级返回
+  Hall_PalaceClubRateListRequest = 100965;// 殿堂级俱乐部列表
+  Hall_PalaceClubRateListResponse = 100966;// 殿堂级俱乐部列表
+  Hall_ClubProfitGoldListRequest = 100967;//俱乐部盈利金币
+  Hall_ClubProfitGoldListResponse = 100968;//俱乐部盈利金币
+
+  Hall_ClubTaskListSync = 100969;//俱乐部任务同步
+  Hall_ClubRedEnvelopeSync = 100970;//俱乐部红包同步
+
+  //---------------邮件模块
+  //从101001开始100位
+  Hall_NewEmailSync = 101000; //新增邮件同步
+  Hall_EmailDelRequest = 101005; //移除一个邮件请求
+  Hall_EmailDelResponse = 101006; //移除一个邮件响应
+  Hall_EmailReadRequest = 101009; //读邮件请求
+  Hall_EmailReadResponse = 101010; //读邮件响应
+  Hall_EmailGetRewardRequest = 101011; //领取邮件奖励请求
+  Hall_EmailGetRewardResponse = 101012; //领取邮件奖励响应
+
+  //---------------社交模块
+  //从102001
+  Hall_PopularityRankRequest = 102001;//人气总排行榜请求
+  Hall_PopularityRankResponse = 102002;
+  Hall_NearbyPlayerListRequest = 102003;//附近玩家
+  Hall_NearbyPlayerListResponse = 102004;
+  Hall_MyFansListRequest = 102005;//粉丝列表
+  Hall_MyFansListResponse = 102006;
+  Hall_MyFriendsListRequest = 102007;//我的关注列表
+  Hall_MyFriendsListResponse = 102008;
+  Hall_AddMyFriendsRequest = 102009;//添加关注
+  Hall_AddMyFriendsResponse = 102010;//添加关注返回
+  Hall_CancelMyFriendsRequest = 102011;//取消关注
+  Hall_CancelMyFriendsResponse = 102012;//取消关注返回
+  Hall_SearchPlayerFromIDRequest = 102013;//搜索玩家
+  Hall_SearchPlayerFromIDResponse = 102014;
+  Hall_AddGoldToMyFriendsRequest = 102015;//赠送金币
+  Hall_AddGoldToMyFriendsResponse = 102016;
+  Hall_AddFansSync = 102017;//添加推送粉丝同步
+  Hall_ReduceFansSync = 102018;//减少推送粉丝同步
+  Hall_GetWorldMsgRequest = 102019;//获取世界消息
+  Hall_GetWorldMsgResponse = 102020;//获取世界返回
+  Hall_GetClubMsgRequest = 102021;//获取俱乐部消息
+  Hall_GetClubMsgResponse = 102022;//获取俱乐部返回
+  Hall_GetPrivateChatEntityRequest = 102023;//获取私聊entity列表消息
+  Hall_GetPrivateChatEntityResponse = 102024;//获取私聊entity列表返回
+  Hall_GetPrivateChatMsgRequest = 102025;//获取私聊消息
+  Hall_GetPrivateChatMsgResponse = 102026;//获取私聊返回
+  Hall_SendWorldMsgRequest = 102027;//发送世界消息
+  Hall_SendWorldMsgSync = 102028;//同步世界消息
+  Hall_SendClubMsgRequest = 102029;//发送俱乐部消息
+  Hall_SendClubMsgSync = 102030;//同步俱乐部消息
+  Hall_SendPrivateChatMsgRequest = 102031;//发送私聊消息
+  Hall_SendPrivateChatMsgSync = 102032;//同步私聊消息
+  //Hall_GetPrivateChatOfflineEntityResponse = 102033;//获取私聊离线entity列表返回
+  Hall_GetMarqueeMsgSync = 102034;//跑马灯消息
+  Hall_SeePrivateChatMsgRequest = 102035;//查看私聊消息
+  Hall_SeePrivateChatMsgResponse = 102036;//查看私聊消息返回
+  Hall_UpdateFansUnixSec = 102037;//更新粉丝红点
+  Hall_DelPrivateChatEntityRequest = 102038;//删除私聊entity
+  Hall_DelPrivateChatEntityResponse = 102039;//删除私聊entity返回
+
+  //---------------VIP模块---------------103000开始---------------
+  Vip_GetVipDailyBoxRequest = 103002;//获取VIP每日礼包请求
+  Vip_GetVipDailyBoxResponse = 103003;//获取VIP每日礼包返回
+  Vip_GetVipLvRewardRequest = 103004;//获取VIP等级礼包请求
+  Vip_GetVipLvRewardResponse = 103005;//获取VIP等级礼包返回
+
+  //---------------任务/成就/称号模块---------------104000开始---------------
+  Task_ProgressClaimRewardRequest = 104005;//活跃进度表领取奖励
+  Task_ProgressClaimRewardResponse = 104006;
+  Task_ListClaimRewardRequest = 104007;//任务表领取奖励
+  Task_ListClaimRewardResponse = 104008;
+  Player_AchievementListRequest = 104009;//个人成就列表
+  Player_AchievementListResponse = 104010;
+  Player_CollectApplyRequest = 104013;//使用称号
+  Player_CollectApplyResponse = 104014;
+  Player_AchievementLvClaimRewardRequest = 104017;//成就等级领取奖励
+  Player_AchievementLvClaimRewardResponse = 104018;
+  Player_AchievementLvClaimRewardListRequest = 104019;//已领取的成就等级奖励列表
+  Player_AchievementLvClaimRewardListResponse = 104020;
+  Player_AchievementChildListRequest = 104021;//个人子成就列表
+  Player_AchievementChildListResponse = 104022;
+  Player_TaskListSync          = 104023;//任务同步
+  Player_CollectListSync = 104024;//称号同步
+  Player_TaskListResetSync   =104026;//每天任务重置推送
+  Player_CollectActivateRequest = 104027;//称号激活
+  Player_CollectActivateResponse =104028;//称号激活
+  Player_AchievementLvSync = 104029;//成就等级同步
+
+  //------------------福利模块---------------------------105000开始----------------
+  //从105001开始
+  Welfare_SignInRequest = 105001;//签到请求
+  Welfare_SignInResponse = 105002;
+  Welfare_SignInListRequest = 105003;//签到列表
+  Welfare_SignInListResponse = 105004;
+
+  Welfare_FreeShopListRequest = 105005;//免费商店请求
+  Welfare_FreeShopListResponse = 105006;//免费商店请求
+  Welfare_FreeShopBuyRequest = 105007;//购买物品
+  Welfare_FreeShopBuyResponse = 105008;//购买物品
+  Welfare_RefreshFreeShopRequest = 105009;//刷新商店请求
+  Welfare_RefreshFreeShopResponse = 105010;//刷新商店返回
+
+  //------------------宝箱模块---------------------------106000开始----------------
+  //从106001开始
+  Hall_BoxUnlockRequest = 106001;//宝箱解锁请求
+  Hall_BoxUnlockResponse = 106002;//宝箱解锁返回
+  Hall_BoxCountDownRequest = 106003;//宝箱解锁倒计时请求
+  Hall_BoxCountDownResponse = 106004;
+  Hall_BoxClaimRequest = 106005;//领取宝箱请求
+  Hall_BoxClaimResponse = 106006;//领取宝箱返回
+  Hall_BoxListRequest = 106007;//宝箱列表
+  Hall_BoxListResponse = 106008;
+  Hall_ClaimMagicBoxRequest = 106009;//领取神秘宝箱请求
+  Hall_ClaimMagicBoxResponse = 106010;//领取神秘宝箱返回
+  Hall_BoxOpenRequest = 106011;//打开宝箱请求
+  Hall_BoxOpenResponse = 106012;
+  Hall_BoxFastForwardRequest = 106013;//宝箱加速
+  Hall_BoxFastForwardResponse = 106014;//宝箱加速
+  Hall_BoxClaimRewardRequest = 106015;//宝箱领取奖励
+  Hall_BoxClaimRewardResponse = 106016;//宝箱领取奖励
+
+  //-------------------图鉴模块-----------------------107001
+  Player_CueHandBookSync = 107001;//图鉴同步
+  Player_CueHandBookActivateRequest = 107002;//激活请求
+  Player_CueHandBookActivateResponse = 107003;//激活请求返回
+
+  //-------------------特殊商城----------------------108001
+  Hall_SpecialShopListRequest = 108001;//特殊商店列表
+  Hall_SpecialShopListResponse = 108002;//
+  Hall_BuySpecialShopRequest = 108003;//购买特殊商品
+  Hall_BuySpecialShopResponse = 108004;//
+
+  //--------------------充值------------------------100901
+  Hall_FirstRechargeRequest =109001;//首充请求
+  Hall_FirstRechargeResponse =109002;//首充返回
+
+  //---------------对战模块
+  //从110001开始100位
+  Battle_StartRequest = 110001; //对战开始请求
+  Battle_StartResponse = 110002; //对战开始返回
+  Battle_BilliardInitInfoSync = 110003; //台球的信息初始化同步
+  Battle_AimingRequest = 110004; //瞄准
+  Battle_BilliardUpdateAimingSync = 110005; //瞄准返回
+  Battle_EnergyStorageRequest = 110006; //蓄力
+  Battle_BilliardUpdateStrengthSync = 110007; //蓄力返回
+  Battle_StrokeBallRequest = 110008; //击球
+  Battle_StrokeBallResponse = 110009; //击球返回
+  Battle_BallsUpdateRequest = 110011; //桌面球同步位置
+  Battle_BallsUpdateResponse = 110012; //桌面球同步位置返回
+  Battle_RoundEndRequest = 110013; //回合结束
+  Battle_RoundEndResponse = 110014; //回合结束返回
+  Battle_BallGoalRequest = 110015; //进球
+  Battle_BallGoalResponse = 110016; //进球返回
+  Battle_CountdownEndSync = 110017; //对战倒计时结束同步消息
+  Battle_SettlementSync = 110018; //对战结算同步消息
+  Battle_SurrenderRequest = 110019; //投降
+  Battle_SurrenderResponse = 110020; //投降返回
+  Battle_FirstBallColliderRequest = 110021; //打到的第一个球
+  Battle_FirstBallColliderResponse = 110022; //打到的第一个球返回
+  Battle_ApplyIncrBindRequest = 110023; //申请加注请求
+  Battle_ApplyIncrBindResponse = 110024; //申请加注返回
+  Battle_FeedbackIncrBindRequest = 110025; //加注反馈请求
+  Battle_FeedbackIncrBindResponse = 110026; //加注反馈返回
+  Battle_SetWhiteBallLocationIngRequest = 110027; //白球放置中
+  Battle_SetWhiteBallLocationIngSync = 110028; //白球放置中同步
+  Battle_SetWhiteBallLocationEndRequest = 110029; //白球放置结束白球
+  Battle_SetWhiteBallLocationEndSync = 110030; //白球放置结束同步
+  Battle_ViolationResponse = 110031; //违规消息
+  Battle_ObstructRequest = 110032; //加塞
+  Battle_ObstructSync = 110033; //加塞返回
+  Battle_ObstructCueRequest = 110034; //抬杆
+  Battle_ObstructCueSync = 110035; //抬杆返回
+  Battle_UserChartMsgRequest = 110036; //对战消息
+  Battle_UserChartMsgSync = 110037; //对战消息返回
+}

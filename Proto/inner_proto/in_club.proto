@@ -1,0 +1,81 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./;msg";
+
+message ClubTop10DBRequest
+{
+  uint32 TimeStamp =1;
+}
+
+message ClubTop10DBResponse
+{
+  uint32 TimeStamp =1;
+  repeated ClubTop10DBInfo List =2;
+}
+
+message ClubTop10DBInfo
+{
+  uint32 ClubID =1;
+  uint32 ClubBadge =2;
+  string ClubName =3;
+  uint32 ClubRate =4;
+  uint32 MasterEntityID =5;
+  string MasterPlayerName =6;
+  uint32 MasterPlayerIcon =7;
+  uint32 ClubScore =8;
+  uint32 Num =9;
+}
+
+// 在DB处理成员加入
+message ClubRatifyJoinToDB
+{
+   uint32 EntityID =1;
+   uint32 AddEntityID =2;
+   bool IsJoin =3;
+   uint32 ClubID =4;
+}
+
+// 在Game处理成员加入
+message ClubRatifyJoinToGame
+{
+  uint32 EntityID =1;
+  uint32 AddEntityID =2;
+  bool IsJoin =3;
+  uint32 ClubID =4;
+}
+
+message ClubDelMembersToDB
+{
+  uint32 EntityID =1;
+  uint32 DelEntityID =2;
+  uint32 ClubID =3;
+}
+
+
+message SyncEntityClubNoticeDB
+{
+  uint32 TimeStamp =1;
+}
+
+
+//-------------------------------内部测试协议------------
+
+//批量注册
+message BatchCreateClubRequest
+{
+  uint32 RegClubLevel =1;
+  uint32 RegNum =2;
+}
+
+//批量注册返回
+message BatchCreateClubResponse
+{
+  repeated uint32 ClubID =1;
+}
+
+//添加参数
+message AddClubDataRequest
+{
+  uint32 Param =1;
+}

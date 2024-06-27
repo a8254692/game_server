@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./;msg";
+
+
+message EntityIDList
+{
+  repeated uint32 List =1;
+}
+
+message SyncConditional
+{
+  uint32 EntityID =1;
+ repeated ConditionData Cond=2;
+}
+
+message ConditionData
+{
+  uint32 ConditionalID =1;
+  uint32 Progress =2;//进度
+  bool IsTotal =3;//默认false，更新增量；true，更新全量
+}
+
+message SyncEntityRobotNoticeDB
+{
+  uint32 TimeStamp =1;
+}
+
+message SyncAllEntityRobotNoticeDB
+{
+  uint32 TimeStamp =1;
+  uint32 SyncNum=2;//每次同步个数
+}
+
+message DbServerStartUpRequest
+{
+  uint32 TimeStamp =1;
+}

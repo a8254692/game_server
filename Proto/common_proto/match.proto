@@ -1,0 +1,150 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./;msg";
+
+
+//*****************************匹配信息相关*****************************
+
+//8球匹配请求
+message HallEightMatchRequest
+{
+  uint32 EntityID = 1;
+  uint32 Level = 2; // 0:新手场 1：初级 2：中级 3：高级
+  bool IsFastMatch =3;//true快速匹配，false反之
+}
+
+//8球进入匹配，返回
+message HallEightMatchResponse
+{
+  uint32 Code = 1;//0进入匹配，1推荐低级级场，2金币不足，3推荐更高级场
+  uint32 ResLevel =2;//推荐高级场次
+}
+
+message MatchResponsePlayer
+{
+  uint32 EntityID = 1;
+  PlayerData Player =2;
+  PlayerItemInfo PlayerItem =3;
+}
+
+message HallMatchSuccessResponse
+{
+  uint32 Code = 1;
+  uint32 RoomID = 2;
+  repeated MatchResponsePlayer MatchResponsePlayer = 3;
+}
+
+message PlayerData
+{
+  string PlayerName = 1;
+  uint32 PlayerIcon = 2;
+  uint32 PlayerLv = 3;
+  uint32 IconFrame =4;//头像框
+  uint32 IsAi = 5; //0:玩家 1:ai机器人
+  uint32 PeakRankLv = 6; //巅峰等级
+  uint32 PeakRankExp = 7; //巅峰赛星数
+}
+
+message PlayerItemInfo
+{
+  uint32 EntityID =1;
+  uint32 CueTableID =2;//球杆
+  uint32 BattingEffect =3;//击球效果
+  uint32 GoalInEffect =4;//进球效果
+  uint32 CueBall =5;//主球
+  uint32 TableCloth =6;//球桌
+}
+
+message HallEightMatchCancelRequest
+{
+  uint32 EntityID = 1;
+  uint32 Level =2;
+}
+
+//对战中修改背包
+message UseItemFromRoomIDRequest
+{
+  uint32 EntityID =1;
+  uint32 ItemID =2;
+  uint32 RoomID =3;
+}
+
+//对战中修改背包返回
+message UseItemFromRoomIDResponse
+{
+  uint32 Code =1;//0修改成功，1修改失败
+  repeated PlayerItemInfo PlayerItem = 2;
+}
+
+//重赛请求
+message EightReplayRequest
+{
+  uint32 EntityID =1;
+  uint32 RoomID =2;//房间号
+}
+
+//重赛返回
+message EightReplayResponse
+{
+  uint32 Code =1;//0成功并开局，1房间不存在,2对手离开房间，3金币不足，4推荐去高级场，5对手金币不足,6对手拒绝
+  uint32 RoomID = 2;//房间ID
+  repeated MatchResponsePlayer MatchResponsePlayer = 3;//用户信息
+}
+
+//确认推送
+message EightReplayConfirmRequest
+{
+  uint32 EntityID =1;//本用户id
+  uint32 RoomID = 2;//房间ID
+}
+
+//确认返回
+message EightReplayConfirmResponse
+{
+  uint32 EntityID =1;//本用户id
+  bool IsAgree = 2;//false不同意，true同意
+  uint32 RoomID = 3;//房间ID
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~匹配信息结束~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+//*****************************房间信息相关*****************************
+message HallExitRoomRequest
+{
+  uint32 EntityID = 1;
+  uint32 RoomID = 2;
+}
+
+message HallExitRoomResponse
+{
+  uint32 Code = 1;
+}
+
+message HallMatchTimeOutResponse
+{
+  uint32 Code = 1;
+}
+
+//房间列表请求
+message HallRoomListRequest
+{
+  uint32 EntityID =1;//请求id
+  uint32 GameType =2;//游戏模式,// 0: 8球,1:血流,2:斯诺克
+}
+
+//房间模式返回
+message HallRoomListResponse
+{
+  uint32 GameType =1;//游戏模式
+  repeated RoomInfo RoomList =2;//
+}
+
+message RoomInfo
+{
+  uint32 RoomTableID =1;//配置表id
+  uint32 PlayerNum =2;//玩家人数
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~房间信息结束~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

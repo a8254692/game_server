@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./;msg";
+import "in_reward.proto";
+
+message InStatisticsUserOlineNumRequest
+{
+  uint32 Num = 1;
+}
+
+message InGameLogResourceRequest
+{
+  uint32    EntityID = 1;      //账号
+  int64     Time = 2;      //日志时间
+  string    Uuid =3;       //uuid
+  uint32    ResType = 4;      //资源类型
+  uint32    ResSubType = 5;      //资源子类型
+  uint32    ResID = 6;      //资源ID
+  uint32 IncrType = 7;      //数量
+  uint64    Count = 8;      //数量
+  uint32    AfterModifyNum = 9;      //修改后数量
+  uint32    SystemID = 10;      //所属系统
+  uint32    ActionID = 11;      //行为
+  string    DeviceID = 12;      //设备Id
+  uint32    ChannelID = 13;      //渠道Id,对应Common.ChannelType枚举
+  string    BundleID = 14;      //包名
+}
+
+message InGameLogRechargeRequest
+{
+  uint32    EntityID = 1;      //账号
+  int64     Time = 2;      //日志时间
+  uint32    Channel =3;       //充值渠道
+  uint32    OrderId = 4;      //订单号
+  uint32    BeforeRecharge = 5;   //充值前钻石数量
+  uint32    AfterRecharge = 6;    //充值后钻石数量
+  float    OrderAmount = 7;      //订单金额
+  float    Discount = 8;      //折购信息
+  float    EventGifts = 9;       //活动赠送
+  float    Deduction = 10;      //扣款
+  float    ActualReceipt = 11;      //实际到账
+  int64    CreateOrderTime = 12;      //下单时间
+  int64    PayTime = 13;       //支付时间
+  uint32   TypeN = 14;       //支付类型 0普通充值，1首充，2活动充值
+  repeated InRewardInfo RewardItems =15;//物品列表
+}

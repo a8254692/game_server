@@ -1,0 +1,367 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./;msg";
+import "social.proto";
+
+enum BilliardState {
+  Enum_Aiming = 0; //瞄准
+  Enum_Accumulating = 1; //蓄力中
+  Enum_Scrolling = 2; //球滚动中
+  Enum_Stop = 3; //球滚动停止
+  Enum_Spoting = 4; //放置白球（白球进袋或出桌面后）
+  Enum_Violation = 5; //违规
+}
+
+enum OperateType {
+  None = 0; //占位符
+  Incr = 1; //增加
+  Decr = 2; //减少
+}
+
+//球信息
+message BattleBallInfo
+{
+  uint32 BallId = 1;
+  BattleBallCoordinateInfo Position = 2;
+  BattleBallCoordinateInfo Rotation = 3;
+  uint32 GoalsBallPocket = 4;    //进球球袋
+}
+
+message BattleBallCoordinateInfo
+{
+  float X = 1;
+  float Y = 2;
+  float Z = 3;
+}
+
+//分边信息
+message SplittingInfo
+{
+  uint32 EntityID = 1;
+  uint32 Splitting = 2;
+}
+
+//开始对战
+message BattleStartRequest
+{
+  uint32 RoomID = 1;  //房间ID
+  uint32 RoundID = 2;  //回合ID
+  uint32 EntityID = 3;  //发消息人EntityID
+}
+
+//对战台球桌面初始化信息
+message BattleBilliardInitInfoSync
+{
+  uint32 Code = 1;  //状态码
+  uint32 RoomID = 2;  //房间ID
+  uint32 StartCueEntityID = 3;  //先击球方EntityID
+  BattleRoundInfo  RoundInfo = 4;
+  repeated uint32 InitBalls = 5; //初始摆球排序
+  uint32 ShowSettleGoldNum = 6; //展示底注数
+}
+
+//瞄准
+message BattleAimingRequest
+{
+  uint32 RoomID = 1;  //房间ID
+  uint32 RoundID = 2;  //回合ID
+  uint32 EntityID = 3;  //发消息人EntityID
+  BattleBallCoordinateInfo CueRotationInfo = 4;  //杆角度
+}
+
+//对战台球桌面更新杆角度信息
+message BattleBilliardUpdateAimingSync
+{
+  uint32 RoomID = 1;  //房间ID
+  uint32 RoundID = 2;  //回合ID
+  BattleBallCoordinateInfo CueRotationInfo = 3;  //杆角度
+  uint32 CurrenRoundEntityID = 4; //当前回合的击打用户ID
+}
+
+//蓄力
+message BattleEnergyStorageRequest
+{
+  uint32 RoomID = 1;  //房间ID
+  uint32 RoundID = 2;  //回合ID
+  uint32 EntityID = 3;  //发消息人EntityID
+  float Strength = 4;  //力度
+}
+
+//对战台球桌面更新力度信息
+message BattleBilliardUpdateStrengthSync
+{
+  uint32 RoomID = 1;  //房间ID
+  uint32 RoundID = 2;  //回合ID
+  float Strength = 3;  //力度
+  uint32 CurrenRoundEntityID = 4; //当前回合的击打用户ID
+}
+
+//加塞
+message BattleObstructRequest
+{
+  uint32 RoomID = 1;  //房间ID
+  uint32 RoundID = 2;  //回合ID
+  uint32 EntityID = 3;  //发消息人EntityID
+  BattleBallCoordinateInfo VectorInfo = 4;  //加塞向量
+}
+
+//加塞更新向量信息
+message BattleObstructSync
+{
+  uint32 RoomID = 1;  //房间ID
+  uint32 RoundID = 2;  //回合ID
+  BattleBallCoordinateInfo VectorInfo = 3;  //加塞向量
+}
+
+
+//抬杆
+message BattleObstructCueRequest
+{
+  uint32 RoomID = 1;  //房间ID
+  uint32 RoundID = 2;  //回合ID
+  uint32 EntityID = 3;  //发消息人EntityID
+  uint32 Angle = 4;  //角度
+}
+
+//抬杆信息
+message BattleObstructCueSync
+{
+  uint32 RoomID = 1;  //房间ID
+  uint32 RoundID = 2;  //回合ID
+  uint32 Angle = 3;  //角度
+}
+
+//击球
+message BattleStrokeBallRequest
+{
+  uint32 RoomID = 1;  //房间ID
+  uint32 RoundID = 2;  //回合ID
+  uint32 EntityID = 3;  //发消息人EntityID
+}
+
+//击球返回
+message BattleStrokeBallResponse
+{
+  uint32 Code = 1;  //状态码
+  uint32 RoomID = 2;  //房间ID
+  uint32 RoundID = 3;  //回合ID
+}
+
+message BattleRoundInfo
+{
+  uint32 RoomID = 1;  //房间ID
+  uint32 RoundID = 2; //回合ID
+  uint32 CurrenRoundEntityID = 3; //当前回合的击打用户ID
+  BilliardState State = 4; //状态
+  BattleBallCoordinateInfo WhiteDecimalVector3 = 5; //当前回合白球摆放位置（当违规时）
+  //暂时未使用
+  repeated uint32 PotBalls = 6; //当前回合进球列表
+  float Strength = 7;  //力度
+  BattleBallCoordinateInfo CueRotationInfo = 8;  //杆角度
+  BattleBallCoordinateInfo VectorInfo = 9;  //加塞向量
+  uint32 Angle = 10;  //抬杆角度
+}
+
+//回合结束
+message BattleRoundEndRequest
+{
+  uint32 RoomID = 1;  //房间ID
+  uint32 RoundID = 2;  //回合ID
+  uint32 EntityID = 3;  //发消息人EntityID
+  repeated BattleBallInfo BallsInfo = 4;  //球信息
+  bool IsNotContactFrame = 5; //是否没有触边 true未触边，false触边
+  map<uint32, uint32> BattingStyleStatistic = 6; //击球风格统计
+}
+
+//回合结束返回
+message BattleRoundEndResponse
+{
+  uint32 Code = 1;  //状态码
+  uint32 RoomID = 2;  //房间ID
+  uint32 RoundID = 3;  //回合ID
+  uint32 CurrenRoundEntityID = 4;  //当前回合的EntityID
+  BattleRoundInfo  RoundInfo = 5;
+  repeated SplittingInfo SplittingInfo = 6;  //分边情况
+  repeated BattleBallInfo BallsInfo = 7;  //球信息
+  repeated uint32 AllGoalsBalls = 8; //所有的进球列表
+}
+
+//违规消息
+message BattleEntityViolationResponse
+{
+  uint32 Code = 1;  //状态码
+  uint32 RoomID = 2;  //房间ID
+  uint32 EntityID = 3;  //发消息人EntityID
+  bool IsViolation = 4;  //是否违规
+  uint32 ViolationNum = 5;  //违规次数
+}
+
+//进球
+message BattleBallGoalRequest
+{
+  uint32 RoomID = 1;  //房间ID
+  uint32 RoundID = 2;  //回合ID
+  uint32 EntityID = 3;  //发消息人EntityID
+  uint32 GoalsEntityID = 4;  //进球EntityID
+  uint32 BallGoalsID = 5;  //进球的id
+  uint32 GoalsBallPocket = 6;  //进球的球袋ID
+}
+
+//进球返回
+message BattleBallGoalResponse
+{
+  uint32 Code = 1;  //状态码
+  uint32 RoomID = 2;  //房间ID
+}
+
+//倒计时结束同步消息
+message BattleCountdownEndSync
+{
+  uint32 RoundID = 1;  //回合ID
+  uint32 RoomID = 2;  //房间ID
+  uint32 CurrenRoundEntityID = 3;  //当前的EntityID
+  BattleRoundInfo  RoundInfo = 4;
+  repeated SplittingInfo SplittingInfo = 5;  //分边情况
+  repeated BattleBallInfo BallsInfo = 6;  //球信息
+  repeated uint32 AllGoalsBalls = 7; //所有的进球列表
+}
+
+//回合结算数据
+message BattleSettlementSync
+{
+  uint32 RoomID = 1;  //房间ID
+  uint32  EntityID = 2;  //ID
+  uint32  BattleResult = 3;  //战斗结果，0胜利，否则失败
+  uint32  Exp = 4;  //增加经验数
+  uint32  Gold = 5;  //增加/扣除金币数
+  OperateType  GoldAddType = 6;  //增加/扣除类型-金币
+  uint32  SettlementType = 7;  //结算类型 1正常2投降
+  OperateType  StarAddType = 9;  //增加/扣除类型-赛季星数
+  uint32  ChangePeakRankStar = 8;  //增加/扣除赛季星数
+  uint32  PeakRankLv = 10;  //变更后赛季等级
+  uint32  PeakRankStar = 11;  //变更后赛季星数
+}
+
+//投降
+message BattleSurrenderRequest
+{
+  uint32 RoomID = 1;  //房间ID
+  uint32 RoundID = 2;  //回合ID
+  uint32 EntityID = 3;  //发消息人EntityID
+}
+
+//投降
+message BattleSurrenderResponse
+{
+  uint32 Code = 1;  //状态码
+  uint32 RoomID = 2;  //房间ID
+  uint32 RoundID = 3;  //回合ID
+  uint32 EntityID = 4;  //发消息人EntityID
+}
+
+//打到的第一个球
+message BattleFirstBallColliderRequest
+{
+  uint32 RoomID = 1;  //房间ID
+  uint32 RoundID = 2;  //回合ID
+  uint32 EntityID = 3;  //发消息人EntityID
+  uint32 BallID = 4;  //球ID
+}
+
+//打到的第一个球返回
+message BattleFirstBallColliderResponse
+{
+  uint32 Code = 1;  //状态码
+  uint32 RoomID = 2;  //房间ID
+}
+
+//申请加注
+message ApplyIncrBindRequest
+{
+  uint32 RoomID = 1;  //房间ID
+  uint32 EntityID = 2;  //发消息人EntityID
+}
+
+//申请加注返回
+message ApplyIncrBindResponse
+{
+  uint32 RoomID = 1;  //房间ID
+  uint32 ApplyEntityID = 2;  //申请人EntityID
+}
+
+//反馈加注
+message FeedbackIncrBindRequest
+{
+  uint32 RoomID = 1;  //房间ID
+  uint32 EntityID = 2;  //发消息人EntityID
+  bool IsAgree = 3; //是否同意加注
+}
+
+//反馈加注返回
+message FeedbackIncrBindResponse
+{
+  uint32 RoomID = 1;  //房间ID
+  uint32 FeedbackEntityID = 2;  //反馈人EntityID
+  bool IsAgree = 3; //是否同意加注
+  uint32 ShowSettleGoldNum = 4; //展示底注数
+}
+
+
+//桌面同步白球放置中位置
+message SetWhiteBallLocationIngRequest
+{
+  uint32 RoomID = 1;  //房间ID
+  uint32 RoundID = 2;  //回合ID
+  uint32 EntityID = 3;  //发消息人EntityID
+  BattleBallInfo WhiteBallsInfo = 4;  //球信息
+}
+
+//桌面同步白球放置中位置返回
+message SetWhiteBallLocationIngSync
+{
+  uint32 Code = 1;  //状态码
+  uint32 RoomID = 2;  //房间ID
+  uint32 RoundID = 3;  //回合ID
+  BattleBallInfo WhiteBallsInfo = 4;  //球信息
+}
+
+//桌面同步白球位置
+message SetWhiteBallLocationEndRequest
+{
+  uint32 RoomID = 1;  //房间ID
+  uint32 RoundID = 2;  //回合ID
+  uint32 EntityID = 3;  //发消息人EntityID
+  BattleBallInfo WhiteBallsInfo = 4;  //球信息
+}
+
+//桌面同步白球位置返回
+message SetWhiteBallLocationEndSync
+{
+  uint32 Code = 1;  //状态码
+  uint32 RoomID = 2;  //房间ID
+  uint32 RoundID = 3;  //回合ID
+  BattleBallInfo WhiteBallsInfo = 4;  //球信息
+  BilliardState State = 5; //状态
+}
+
+//对战消息
+message BattleUserChartMsgRequest
+{
+  uint32 RoomID = 1;  //房间ID
+  uint32 RoundID = 2;  //回合ID
+  uint32 EntityID = 3;  //发消息人EntityID
+  MsgType MType = 4;  //消息类型
+  string Context = 5;  //消息体
+}
+
+//对战消息返回
+message BattleUserChartMsgSync
+{
+  uint32 Code = 1;  //状态码
+  uint32 RoomID = 2;  //房间ID
+  uint32 RoundID = 3;  //回合ID
+  uint32 EntityID = 4;  //发消息人EntityID
+  MsgType MType = 5;  //消息类型
+  string Context = 6;  //消息体
+}

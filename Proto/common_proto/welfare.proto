@@ -1,0 +1,92 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./;msg";
+
+//---------------------签到------------------------//
+// 签到请求
+message SignInRequest
+{
+  uint32 EntityID =1;
+  uint32 SignType =2;//0普通，1广告
+}
+
+// 签到返回
+message SignInResponse
+{
+  uint32 EntityID =1;
+  uint32 Code =2;//0成功，1失败
+  uint32 SignInContinueDays =3;// 连续签到天数
+  uint32 SignType =4;//0普通，1广告
+}
+
+// 签到列表
+message SignInListRequest
+{
+  uint32 EntityID =1;
+
+}
+
+// 签到列表
+message SignInListResponse
+{
+  uint32 SignInContinueDays =1;// 连续签到天数
+  uint32 SignInReward =2;// 0未签到，1已签到（已领取）
+  uint32 SignType =3;//0普通，1广告
+}
+
+//---------------------签到------------------------//
+
+//---------------------免费商店------------------------//
+
+//免费商店列表请求
+message FreeShopListRequest
+{
+  uint32 EntityID =1;//用户id
+}
+
+//免费商店列表返回
+message FreeShopListResponse
+{
+  repeated FreeShopProduct List =1;//商品列表
+  uint32 ReFreshTimes =2;//刷新次数
+  uint32 NextRefreshHour =3;//下个刷新时间点
+  string EntityKey =4;//小时key
+}
+
+message FreeShopProduct
+{
+  uint32 ShopKey =1;//商品id
+  uint32 BuyStatus =2;//购买状态，0未购买，1已售空
+}
+
+//购买物品
+message FreeShopBuyRequest
+{
+  uint32 EntityID =1;
+  uint32 ShopKey =2;//商品id
+  string EntityKey =3;//小时key
+}
+
+//购买物品
+message FreeShopBuyResponse
+{
+  uint32 Code =1;//0购买成功，1金币不足，2钻石不足,3购买失败,4已过期,先刷新数据
+  FreeShopProduct Product =2;//
+}
+
+//刷新商店请求
+message RefreshFreeShopRequest
+{
+  uint32 EntityID =1;
+  uint32 RefreshType =2;//0广告，1货币
+}
+
+//刷新商店返回
+message RefreshFreeShopResponse
+{
+  uint32 Code =1;//0刷新成功，1刷新失败，2今天已满次数,3货币不足
+  repeated FreeShopProduct List =2;//商品列表
+  uint32 ReFreshTimes =3;//剩余刷新次数
+}
+//---------------------免费商店------------------------//

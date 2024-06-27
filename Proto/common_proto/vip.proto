@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./;msg";
+import "reward.proto";
+
+message VipInfo
+{
+  uint32     Level = 1;  //等级
+  ReceiveStatus    GetRewardStatus = 2;  //用户已购买的vip等级礼包状态
+}
+
+//获取VIP每日礼包请求
+message GetVipDailyBoxRequest
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+}
+
+//获取VIP每日礼包返回
+message GetVipDailyBoxResponse
+{
+  uint32 Code = 1;  //状态码
+  ReceiveStatus Status = 2;
+}
+
+//获取VIP等级礼包请求
+message GetVipLvRewardRequest
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+  uint32 VipLv = 2;  //VIP等级
+}
+
+//获取VIP等级礼包返回
+message GetVipLvRewardResponse
+{
+  uint32 Code = 1;  //状态码
+  ReceiveStatus Status = 2;
+}

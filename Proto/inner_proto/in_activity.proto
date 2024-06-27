@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./;msg";
+
+message InActivityInfo
+{
+  string     ActivityId = 1;
+  int64      StartTime = 2 ;
+  int64      EndTime = 3;
+  uint32     AType = 4;
+  uint32     SubType = 5;
+  string     ActivityName = 6;
+  uint32     PlatformLimit = 7;
+  uint32     VipLimit = 8;
+  string     Config = 9;
+  uint32     TimeType = 10;
+}
+
+message InActivityList
+{
+  bool IsUpdate = 1;
+  repeated InActivityInfo List = 2;  //好友列表
+}
+
+message InActivityListToDbRequest
+{
+  bool IsUpdate = 1;
+}
+
+
+message InAdminActivityListSync
+{
+  string ActivityId = 1;
+  bool IsRelease = 2;
+}
+
+
+
+message InLoginNoticeInfo
+{
+  string    LoginNoticeId = 1;
+  string    Name = 2;
+  string    Context = 3;
+  int64      StartTime = 4 ;
+  int64      EndTime = 5;
+  uint32     PlatformLimit = 6;
+  uint32     VipLimit = 7;
+  string Title  = 8;
+}
+
+message InLoginNoticeList
+{
+  repeated InLoginNoticeInfo List = 1;  //好友列表
+}
+
+message InLoginNoticeToDbRequest
+{
+}
+
+message InAdminLoginNoticeListSync
+{
+  string ActivityId = 1;
+}

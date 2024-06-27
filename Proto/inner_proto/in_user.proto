@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./;msg";
+
+
+//GM消息返回
+message InEditUserStatusRequest
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+  uint32 OType = 2;  //消息类型 1:加经验 2:加金币 3:加钻石 4:加物品
+}
+
+message InEditUserAttrRequest
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+  uint32 OType = 2;  //消息类型 1:加经验 2:加金币 3:加钻石 4:加物品
+  uint32 Param = 3;  //消息参数 id/num
+}
+
+message InRegRobotRequest
+{
+  uint32 Param = 1;  //消息参数 id/num （普通机器人数量）
+  uint32 High =2;//高级机器人数量
+}
+
+message InResetRobotRequest
+{
+  uint32 TimeStamp =1;
+}

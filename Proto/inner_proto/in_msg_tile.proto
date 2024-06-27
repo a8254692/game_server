@@ -1,0 +1,109 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./;msg";
+
+enum InternalMsgTile {
+  IN_None = 0; //占位符
+  IN_Sys_Test = 1000000;
+
+
+  //-------------------------------用户相关-------------------------------
+  //-------------------------------1001000--开始-------------------------------
+  IN_User_Statistics_Db_Save_Request = 1000100;
+  IN_User_Statistics_Sync_Request = 1000101;
+  IN_User_Statistics_Sync_Response = 1000102;
+  IN_Edit_User_Status_Request = 1000103;
+  IN_Edit_User_Attr_Request = 1000104;
+
+  //-------------------------------商城相关-------------------------------
+  //-------------------------------1002000--开始-------------------------------
+  IN_Shop_Create_Order_Request = 1000200;
+  IN_Shop_Create_Order_Response = 1000201;
+
+  IN_SyncPointsShopToGameRequest = 1000202;   //积分商城同步数据请求
+  IN_SyncPointsShopToGameResponse = 1000203; //积分商城同步数据返回
+  IN_PointsShopOtherToGameSync = 1000204; //积分商城更新数据同步
+
+  IN_PointsShopRedeemedNumToDbSync = 1000205; //积分商城已兑换数量数据同步
+
+  //-------------------------------活动相关---------------------------------
+  IN_SyncActivityListToGameRequest = 1000501;
+  IN_SyncActivityListToGameResponse = 1000502;
+  IN_ActivityOtherToGameSync = 1000503;
+
+  IN_SyncLoginNoticeToGameRequest = 1000504;   //登录公告同步数据请求
+  IN_SyncLoginNoticeToGameResponse = 1000505; //登录公告同步数据返回
+  IN_LoginNoticeOtherToGameSync = 1000506; //登录公告更新数据同步
+
+  //-------------------------------任务相关---------------------------------
+  IN_TaskResetNoticeFromDB = 1000601;
+  IN_TaskResetNoticeFromGame = 1000602;
+  IN_SyncConditionalToDB = 1000603;
+  In_DBServerStartUp = 1000604;//
+
+  //-------------------------------排行榜相关-------------------------------
+  //-------------------------------1000700--开始-------------------------------
+  IN_Rankings_Db_Data_Request = 1000701;
+  IN_Rankings_Db_Data_Response = 1000702;
+  IN_Rankings_Friend_Db_Data_Request = 1000703;
+  IN_Rankings_Friend_Db_Data_Response = 1000704;
+
+
+  //-------------------------------俱乐部相关-------------------------------
+  //-------------------------------1000801--开始-------------------------------
+  IN_ClubTOP10_DB_Data_Request = 1000801;
+  IN_ClubTOP10_DB_Data_Response = 1000802;
+  In_SyncEntityClubDBToGame = 1000803;
+  //In_SyncEntityClubNoticeDB = 1000804;//通知DB同步
+  In_ClubRatifyJoinToDB = 1000805;//通知Db处理俱乐部加入
+  In_ClubRatifyJoinToGame = 1000806;//通知Db处理俱乐部加入
+  In_ClubDelMembersToDB = 1000807;//删除成员
+  In_SyncEntityClub =1000808;
+
+  //---------------------俱乐部内部测试协议
+  In_BatchCreateClubRequest = 1000809;//批量注册俱乐部
+  In_BatchCreateClubResponse = 1000810;
+  In_AddClubData = 1000811;//添加俱乐部数值
+
+  //-------------------------------对战相关-------------------------------
+  //-------------------------------1100001--开始-------------------------------
+
+  //-------------------------------社交相关-------------------------------
+  //-------------------------------1000901--开始-------------------------------
+
+  IN_AddFansFromGameToDB = 1000905;//从game到db服添加粉丝
+  IN_DelFansFromGameToDB = 1000906;//从game到db服减少粉丝
+  IN_SyncPlayerBaseFromDB = 1000907;//同步用户基础信息
+  IN_AddGoldToMyFriendsToDB = 1000908;//通知DB添加金币
+  IN_GetOfflinePrivateFriendsRequest = 1000909;//获取离线好友数据
+  IN_GetOfflinePrivateFriendsResponse = 1000910;//获取离线好友数据返回
+  IN_SendMarqueeMsgSync = 1000911;//发公告
+  IN_SendEmailRequest = 1000912;//发邮件
+  IN_SavePrivateFriendsListRequest = 1000913;//保存用户私聊列表
+  IN_SyncPrivateFriendsListRequest = 1000914;//同步用户私聊列表
+
+  //-------------------------------邮件相关-------------------------------
+  //-------------------------------1001001--开始-------------------------------
+  IN_Email_SendEmailToDbRequest = 1001001; //发送邮件至DB服持久化
+
+  //-------------------------------统记相关-------------------------------
+  IN_Statistics_User_Oline_Num_Request = 1001100;
+  IN_Game_Log_Consume_Resource_Request = 1001101; //物品消耗日志
+  IN_Game_Log_Production_Resource_Request = 1001102; //物品产出日志
+  IN_Game_Log_RechargeLog_Request = 1001103;//充值日志
+
+  //-------------------------------机器人相关-----------------------------
+  In_SyncRobotFromDb               =1001201;//从DB同步机器人到Game服
+  In_SyncRobotToGame               =1001202;//
+  In_RegRobot                      =1001203;//注册机器人
+  In_ResetRobot                    =1001204;
+  In_FirstLoadRobotRequest         =1001205;//第一次启动加载机器人
+  In_FirstLoadRobotResponse        =1001206;//
+
+  //-------------------------------赠送礼物相关-----------------------------
+  In_Player_GiveGiftRequest        = 1001301;//赠送礼物请求
+  In_Player_GiveGiftResponse       = 1001302;//
+  IN_PopularitySync_Request        = 1001303;//人气排行榜同步
+  IN_PopularitySync_Response       = 1001304;//人气排行榜同步
+}

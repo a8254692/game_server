@@ -1,0 +1,166 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./;msg";
+
+message RankInfo
+{
+  string RankNum = 1; //排名
+  uint32 EntityID = 2;
+  string Name = 3;      //名字
+  uint32 Icon = 4;  //头像
+  uint32 IconFrame = 5;  //头像框
+  uint32 Sex = 6; //性别
+  uint32 Num = 7; //展示数值
+  uint32 VipLv = 8;  //vip等级
+  uint32 PeakRankLv = 9; //巅峰赛等级
+  uint32 PeakRankStar = 10; //巅峰赛星数
+  repeated uint32 ItemIds = 11; //球杆物品id
+}
+
+//球杆榜列表请求
+message GetCueRankListRequest
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+}
+
+//球杆榜列表返回
+message GetCueRankListResponse
+{
+  uint32 Code = 1;  //状态码
+  repeated RankInfo List = 2;  //球杆榜列表
+  RankInfo user = 3;
+}
+
+
+//财富排行榜请求
+message GetWealthRankListRequest
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+}
+
+//财富排行榜返回
+message GetWealthRankListResponse
+{
+  uint32 Code = 1;  //状态码
+  repeated RankInfo List = 2;  //球杆榜列表
+  RankInfo user = 3;
+}
+
+
+//排位排行榜请求
+message GetPeakRankListRequest
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+}
+
+//排位排行榜返回
+message GetPeakRankListResponse
+{
+  uint32 Code = 1;  //状态码
+  repeated RankInfo List = 2;  //球杆榜列表
+  RankInfo user = 3;
+}
+
+
+//名人排行榜请求
+message GetCelebrityRankListRequest
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+}
+
+//名人排行榜返回
+message GetCelebrityRankListResponse
+{
+  uint32 Code = 1;  //状态码
+  repeated RankInfo List = 2;  //球杆榜列表
+  RankInfo user = 3;
+}
+
+//人气排行榜请求
+message GetPopularityRankListRequest
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+}
+
+//人气排行榜返回
+message GetPopularityRankListResponse
+{
+  uint32 Code = 1;  //状态码
+  repeated RankInfo List = 2;  //球杆榜列表
+  RankInfo user = 3;
+}
+
+
+//好友球杆榜列表请求
+message GetFriendCueRankListRequest
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+}
+
+//好友球杆榜列表返回
+message GetFriendCueRankListResponse
+{
+  uint32 Code = 1;  //状态码
+  repeated RankInfo List = 2;  //球杆榜列表
+  RankInfo user = 3;
+}
+
+
+//好友财富排行榜请求
+message GetFriendWealthRankListRequest
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+}
+
+//好友财富排行榜返回
+message GetFriendWealthRankListResponse
+{
+  uint32 Code = 1;  //状态码
+  repeated RankInfo List = 2;  //球杆榜列表
+  RankInfo user = 3;
+}
+
+
+//好友排位排行榜请求
+message GetFriendPeakRankListRequest
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+}
+
+//好友排位排行榜返回
+message GetFriendPeakRankListResponse
+{
+  uint32 Code = 1;  //状态码
+  repeated RankInfo List = 2;  //球杆榜列表
+  RankInfo user = 3;
+}
+
+
+//好友名人排行榜请求
+message GetFriendCelebrityRankListRequest
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+}
+
+//好友名人排行榜返回
+message GetFriendCelebrityRankListResponse
+{
+  uint32 Code = 1;  //状态码
+  repeated RankInfo List = 2;  //球杆榜列表
+  RankInfo user = 3;
+}
+
+//好友人气排行榜请求
+message GetFriendPopularityRankListRequest
+{
+  uint32 EntityID = 1;  //发消息人EntityID
+}
+
+//好友人气排行榜返回
+message GetFriendPopularityRankListResponse
+{
+  uint32 Code = 1;  //状态码
+  repeated RankInfo List = 2;  //球杆榜列表
+  RankInfo user = 3;
+}

@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./;msg";
+
+message InGiveGiftRequest
+{
+  uint32 ToEntityID = 1; //接收者id
+  uint32 GiftsId =2;//礼物id
+  uint32 Number = 3;//道具数量
+  uint32 PopularityValue =4;//人气值
+  uint32 EntityID =5;//赠送者
+  uint32 ItemID = 6; //赠送者背包Id
+  string NowMin =7;//当前时间分钟
+  string Uuid =8;//
+  uint32 SysID =9;//
+  uint32 ActionID = 10;//
+}
+
+message InGiveGiftResponse
+{
+  uint32 Code =1;
+  uint32 ToEntityID = 2; //接收者id
+  uint32 GiftsId =3;//礼物id
+  uint32 Number = 4;//道具数量
+  uint32 PopularityValue =5;//人气值
+  uint32 EntityID =6;//赠送者
+  uint32 ItemID = 7; //赠送者背包Id
+  string NowMin =8;//当前时间分钟
+  string Uuid =9;//
+  uint32 SysID =10;//
+  uint32 ActionID = 11;//
+  string PlayerName = 12; //角色名称
+  uint32 PlayerIcon = 13; //角色头像
+  uint32 IconFrame = 14;//头像相框
+  uint32 VipLv = 15; //Vip等级
+  uint32 Sex = 16; //性别
+  uint32 AfterPopularityValue =17;//人气值
+}
